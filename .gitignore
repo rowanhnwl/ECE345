@@ -1,2 +1,15 @@
 /.vscode
 **/build
+
+# Directories
+/hw
+/hw/test
+/hw/templates
+
+# LaTeX build files
+**.aux
+**.bcf
+**.log
+**.run.xml
+**.synctex.gz
+**.toc
