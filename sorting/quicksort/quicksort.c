@@ -1,25 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void print_array(int*, int);
-void swap(int*, int, int);
+#include <quicksort.h>
 
-int partition(int*, int, int);
-int partition_textbook(int*, int, int);
-
-void quicksort(int*, int, int);
 
 int main(void){
     int arr[] = {1, 1, 5, 2, 19, 3, 6, 13, 1, 19, 20, 12, 22, 5, 13, 19, 1, 13, 4, 6, 22, 8, 1, 9, 25, 4};
     int len = sizeof(arr) / sizeof(arr[0]);
 
     quicksort(arr, 0, len - 1);
-    print_array(arr, len);
+    printarr(arr, len);
 }
 
-void print_array(int* a, int size){
-    for (int i = 0; i < size; i++){
-        printf("%d ", *(a + i));
+void printarr(int* a, size_t s){
+    for (int i = 0; i < (int)s; i++){
+        printf("%d ", a[i]);
     }
     printf("\n");
 }

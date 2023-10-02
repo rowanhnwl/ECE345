@@ -1,9 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void merge(int*, int, int, int);
-void mergesort(int*, int, int);
-
 int main(void){
     int array[] = {5, 4, 8, 6, 12, 2, 14, 19, 3, 11, 6};
     

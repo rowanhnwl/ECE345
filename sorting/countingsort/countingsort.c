@@ -1,12 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void printarr(int*, size_t);
-void initarr(int*, size_t);
-
-int getk(int*, size_t);
-void countingsort(int*, size_t);
-
 int main(void){
     int arr[] = {1, 5, 2, 19, 12, 22, 5, 19, 1, 4, 6, 22, 8, 1, 9, 25};
     size_t size = sizeof(arr) / sizeof(arr[0]);
