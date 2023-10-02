@@ -3,7 +3,10 @@
 
 void print_array(int*, int);
 void swap(int*, int, int);
+
 int partition(int*, int, int);
+int partition_textbook(int*, int, int);
+
 void quicksort(int*, int, int);
 
 int main(void){
@@ -56,9 +59,24 @@ int partition(int* a, int start, int end){
     }
 }
 
+int partition_textbook(int* a, int l, int r){
+    int x = a[r];
+    int i = l - 1;
+
+    for(int j = l; j <= r - 1; j++){
+        if (a[j] <= x){
+            i++;
+            swap(a, i, j);
+        }
+    }
+    swap(a, i + 1, r);
+
+    return i + 1;
+}
+
 void quicksort(int* a, int start, int end){
     if (start < end){
-        int p = partition(a, start, end);
+        int p = partition_textbook(a, start, end);
         quicksort(a, start, p - 1);
         quicksort(a, p + 1, end);
     }
