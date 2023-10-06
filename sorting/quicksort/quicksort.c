@@ -3,7 +3,6 @@
 
 #include <quicksort.h>
 
-
 int main(void){
     int arr[] = {1, 1, 5, 2, 19, 3, 6, 13, 1, 19, 20, 12, 22, 5, 13, 19, 1, 13, 4, 6, 22, 8, 1, 9, 25, 4};
     int len = sizeof(arr) / sizeof(arr[0]);
