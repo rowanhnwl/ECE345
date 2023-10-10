@@ -1,4 +1,40 @@
 \section{Question 3}
-    \subsection{(a)}
+    \subsection{(a)} Assume $S_n$ represents sequence $S$ with size of $n$ elements
+    
+        \begin{algorithm}
+        \caption{Calculate intersection of two sorted sequences}
+        \begin{algorithmic} 
+        \REQUIRE $n, A_n, B_n \mid A[i] \leq A[j] \vee B[i] \leq B[j]$ for $0 \leq i \leq j \leq n-1$
+        \ENSURE $I=A_n \cap B_n$
+        \STATE $I \leftarrow$ empty list
+        \STATE $a \leftarrow 0$
+        \STATE $b \leftarrow 0$
+        \WHILE{$a<n$ and $b<n$}
+        \IF{$A[a] = B[b]$}
+        \STATE $I.insert(A[a])$
+        \STATE $a \leftarrow a+1$
+        \STATE $b \leftarrow b+1$
+        \ELSIF{$A[a] < B[b]$}
+        \STATE $a \leftarrow a+1$
+        \ELSIF{$A[a] > B[b]$}
+        \STATE $b \leftarrow b+1$
+        \ENDIF
+        \ENDWHILE
+        \IF{$a=n$}
+        \FOR{$b$ to $n-1$}
+        \IF{$B[b] > B[b-1]$ and $A[n-1] = B[b]$}
+        \STATE $I.insert(B[b])$
+        \ENDIF
+        \ENDFOR
+        \ELSIF{$b=n$}
+        \FOR{$a$ to $n-1$}
+        \IF{$A[a] > A[a-1]$ and $A[a] = B[n-1]$}
+        \STATE $I.insert(A[a])$
+        \ENDIF
+        \ENDFOR
+        \ENDIF
+        \end{algorithmic}
+        \end{algorithm}
+    
     \subsection{(b)}
     \subsection{(c)}
