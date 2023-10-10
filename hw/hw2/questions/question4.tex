@@ -1,6 +1,37 @@
 \section{Question 4}
+    Note: Leftist heap will be abbreviated as LH.
     \subsection{(a)}
+    Let $s$ represent the smallest complete sub-tree of an LH $L$ starting from the root. Since the rank of $L$ will be the length of the shortest path from the root to the leaf, the height of $s$ will have a height of the rank of the root of $L$ (otherwise the $s$ would not be complete). If $m$ is the number of nodes in $s$, the height of $s$ will be $\mathcal{O}(\lg{m})$ which will be the same as the rank of the root. If $n$ is the number of nodes in $L$, then since $s$ is a sub-tree of $L$, $n \geq m \implies \lg{n} \geq \lg{m} \implies$ the rank of the root of an LH is $\mathcal{O}(\log{n})$. QED
+    
     \subsection{(b)}
+    From (a), we know that the rank of the root of an LH is $\mathcal{O}(\log{n})$ which is the same as the length of the rightmost path. We also know that to merge two sorted sequences using \textbf{MERGE} (CLRS, 4th, page 38), it takes $\Theta(n)$. If the size of two leftist heaps $l_1$ and $l_2$ have sizes $n_1$ and $n_2$, then to merge the rightmost paths of $l_1$ and $l_2$, the \textbf{MERGE} procedure will have to iterate over $\mathcal{O}(\log{n_1}) + \mathcal{O}(\log{n_2}) = \mathcal{O}(\log{n})$ elements. Therefore, to merge $l_1$ and $l_2$, it takes $\mathcal{O}(\log{n})$ time. To show that the order invariant is maintained, suppose that an LH $l_1$ with $rank = 0$ is being added to the right child of the root of another LH $l_2$ with its right child removed in the LH merge procedure where merging two LHs splits both of them into sub-trees with their root's right child removed. Since the key of the root of $l_1$ is larger and all other nodes of $l_1$ are larger than its root by the definition of an LH, all other nodes in $l_1$ will be larger than the root of $l_2$. 
+    QED
+    
     \subsection{(c)}
+     Since merging the rightmost paths of two trees $t_1$ and $t_2$ involves recursively removing the right child from the produced sub-trees, merging the rightmost paths of two trees can be modelled as merging the right path of m sub-trees without a right child at their roots. After splitting $t_1$ and $t_2$ into m sub-trees, only the right child of the root of each sub-tree will be changed. Take one of the subtrees $m_1$. If a new tree of arbitrary shape and size is set as the right child of $m_1$, then the left child subtree of $m_1$ would not have been changed. Since the rank of a node is defined as $1 + min{rank(left(x)), rank(right(x))}$ and the left subtree of $m_1$ was not changed, the rank does not change as well. In contrast, the rank of the right child of $m_1$ will be of arbitrary size. QED
+
     \subsection{(d)}
+    From (b) we know that the process of merging the rightmost path of two LHs takes $\mathcal{O}(\log{n})$ time and that it keeps the order invariant. Since the rank update step is executed after their rightmost paths are merged, we need to show that the rank update step takes $\mathcal{O}(\log{n})$ time and that it maintains the balance invariant.
+
+    Suppose we are left with a LH l that is the result of merging the rightmost path of two LHs.
+    We will prove the balance invariant is maintained after the rank update step using induction where P(n + 1) represents the parent of the node.
+    Basis: the rightmost leaf subtree of l has no children so it has a rank of 0 which is the lowest.
+    Inudction Hypothesis: If the children of the root of the subtree are LHs, then swapping the children of the root of the subtree if the rank of the left child is greater than the rank of the right child will turn the subtree into a LH.
+    Inductive Step: From (c) we know that merging the rightmost paths will only change the rank of nodes on the rightmost path. If we apply the update step, the right child will have a smaller rank. Since the right child is an LH, the left child is an LH, and the length of the rightmost path of the subtree root is the smallest, the subtree will be an LH. In 
+    
+    From (a), we also know that the length of the rightmost path of the merged LH will be $\mathcal{O}(\log{n_1}) + \mathcal{O}(\log{n_2}) = \mathcal{O}(\log{n})$. If the rightmost path of the merged tree is traversed from the bottom rightmost leafnode, then $\log{n}$ nodes will be traversed with their children being optionally swapped. Since swapping the child of each parent is just swapping two pointers which takes $\Theta(1)$ time, the rank update step takes $\mathcal{O}(\log{n})$ time.
+
     \subsection{(e)}
+    To implement \textbf{DeleteMin} and Insert, we can utilize the \textbf{Merge} procedure that runs in $\mathcal{O}(\log{n})$ time. The subtree starting at each node of an LH is also an LH or else the order and balance invariant would not be maintained which is why we can use the merge procedure here.
+    
+        \begin{codebox}
+        \Procname{$\proc{DeleteMin}(H)$}
+        \li $\id{l} \gets \proc{Leftist-Heap}(\attrib{H}{root.left})$
+        \li $\id{r} \gets \proc{Leftist-Heap}(\attrib{H}{root.right})$
+        \li $H \gets \proc{Merge}(l, r)$
+        \end{codebox}
+        \begin{codebox}
+        \Procname{$\proc{Insert}(H, i)$}
+        \li $H \gets \proc{Merge}(H, \proc{Leftist-Heap}(\attrib{H}{i}))$
+        \end{codebox}
+        
