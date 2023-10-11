@@ -1,4 +1,88 @@
 \section{Question 1}
     \subsection{(a)}
+    Consider the pseudocode below:
+    \begin{codebox}
+        \Procname{$\proc{FindExactChips}(C, target)$}
+        \li $\proc{HeapSort}(C)$
+        \li $\id{left} \gets 1$
+        \li $\id{right} \gets \attrib{C}{length}$
+        \li \While $\id{left} < \id{right}$
+            \Do
+                \li $\id{sum} \gets C[left] + C[right]$
+
+                \li \If $\id{sum} < target$
+                \Then
+                    \li $\id{left} \gets \id{left} + 1$
+                \li \ElseIf $\id{sum} > target$
+                \Then
+                    \li $\id{right} \gets \id{right} - 1$
+                \li \ElseNoIf
+                    \li \Return $(C[left], C[right])$
+                \End 
+            \End
+        \li \Return $(NIL, NIL)$
+    \end{codebox}
+
+    This algorithm first sorts the array of chips using heapsort. 
+    Then, to find two chips which sum to the target, a $\id{left}$ pointer is set to the left-most element of the sorted array and a $\id{right}$ pointer is set to the right-most.
+    The chips at each pointer are then summed and compared to the target value.
+    If the sum is larger than the target value, then it must be decreased (decrement the $\id{right}$ pointer).
+    Otherwise, if the sum is smaller than the target value, it must be increased (increment the $\id{left}$ pointer).
+    Finally, if the sum is equal to the target value, then we can select (return) the two chips at the $\id{left}$ and $\id{right}$ indices.
+
+    In terms of the time complexity, the implementation of heapsort forces this algorithm to $\mathcal{O}(n\lg{n})$ since this is heapsort's worst-case (and best-case) time complexity (CLRS, 3rd Edition, Exercise 6.4-4).
+    Next, in the worst case (no chips whose values sum to the target), the \textbf{while} loop (lines 4 - 11) must iterate over each chip at most once.
+    Therefore, this section of the algorithm is $\mathcal{O}(n)$.
+
+    To show that $\mathcal{O}(n) + \mathcal{O}(n\lg{n}) = \mathcal{O}(n\lg{n})$, by definition (CLRS, 3rd Edition, Pg. 47):
+    \[n + n\lg{n} \le cn\lg{n}\]
+    \[n + n\lg{n} \le n\lg{n} + (c-1)n\lg{n}\]
+    Subtracting $n\lg{n}$ from both sides when $c = 2$:
+    \[n \le n\lg{n}\]
+
+    Therefore the algorithm is $\mathcal{O}(n\lg{n})$.
+
     \subsection{(b)}
+    To begin, we must first define what would constitute the worst case.
+    Since the black box returns \textbf{all} possible pairs of chips that add to the target, the worst case would be achieved when every possible pair of chips sums to the target.
+    For this to occur, each chip must take on the value $\frac{target}{2}$ since this would allow any two chips to sum to the target value.
+    At the very least, the black box is bound by the number of possible pairings that it must return.
+    For a set of $n$ chips, this value is calculated as:
+    \[\binom{n}{2} = \frac{n!}{2!(n-2)!} = \frac{(n-1)(n)}{2} = \frac{n^2-n}{2} = \mathcal{O}(n^2)\]
+
     \subsection{(c)}
+    Consider the pseudocode below:
+    \begin{codebox}
+        \Procname{$\proc{FindBestChips}(C, target)$}
+        \li $\proc{HeapSort}(C)$
+        \li $\id{left} \gets 1$
+        \li $\id{right} \gets \attrib{C}{length}$
+        \li \While $\id{left} < \id{right}$
+            \Do
+                \li $\id{sum} \gets C[left] + C[right]$
+                \li $\id{difference} \gets target - \id{sum}$
+                \li \If $\id{difference} > 0$ and $\id{difference} < \id{min-difference}$
+                \Then
+                    \li $\id{min-difference} \gets \id{difference}$
+                    \li $\id{closest-pair} \gets (C[left], C[right])$
+                \End
+
+                \li \If $\id{sum} < target$
+                \Then
+                    \li $\id{left} \gets \id{left} + 1$
+                \li \ElseIf $\id{sum} > target$
+                \Then
+                    \li $\id{right} \gets \id{right} - 1$
+                \li \ElseNoIf
+                    \li \Return $(C[left], C[right])$
+                \End 
+            \End
+        \li \Return $\id{closest-pair}$
+    \end{codebox}
+
+    Like part a), the implementation of heapsort forces this algorithm to $\mathcal{O}(n\lg{n})$ since this is heapsort's worst-case (and best-case) time complexity (CLRS, 3rd Edition, Exercise 6.4-4).
+    The only difference between this algorithm and the algorithm in part a) is within the \textbf{while} loop (lines 4-15).
+    Instead of only checking if a correct pair is found, we must track the best pair (closest sum $\le$ target).
+    Regardless, in the worst case (no perfectly-summing chips) we still must iterate over each chip at most once.
+    Therefore this section of the algorithm remains $\mathcal{O}(n)$.
+    By part a), the full algorithm is still $\mathcal{O}(n\lg{n})$.
