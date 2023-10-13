@@ -1,6 +1,7 @@
 \section{Question 1}
     \subsection{(a)}
     Consider the pseudocode below:
+    \begin{spacing}{1.2}
     \begin{codebox}
         \Procname{$\proc{FindExactChips}(C, target)$}
         \li $\proc{HeapSort}(C)$
@@ -22,15 +23,15 @@
             \End
         \li \Return $(NIL, NIL)$
     \end{codebox}
-
+    \end{spacing}
+    \vspace{5mm}
     This algorithm first sorts the array of chips using heapsort. 
     Then, to find two chips which sum to the target, a $\id{left}$ pointer is set to the left-most element of the sorted array and a $\id{right}$ pointer is set to the right-most.
-    The chips at each pointer are then summed and compared to the target value.
-    If the sum is larger than the target value, then it must be decreased (decrement the $\id{right}$ pointer).
-    Otherwise, if the sum is smaller than the target value, it must be increased (increment the $\id{left}$ pointer).
+    If the sum of the chips is larger than the target value, then it must be decreased (decrement the $\id{right}$ pointer).
+    If the sum is smaller than the target value, it must be increased (increment the $\id{left}$ pointer).
     Finally, if the sum is equal to the target value, then we can select (return) the two chips at the $\id{left}$ and $\id{right}$ indices.
 
-    In terms of the time complexity, the implementation of heapsort forces this algorithm to $\mathcal{O}(n\lg{n})$ since this is heapsort's worst-case (and best-case) time complexity (CLRS, 3rd Edition, Exercise 6.4-4).
+    For time complexity, the use of heapsort forces this algorithm to $\mathcal{O}(n\lg{n})$ as this is heapsort's worst-case (and best-case) performance (CLRS, 3rd Edition, Exercise 6.4-4).
     Next, in the worst case (no chips whose values sum to the target), the \textbf{while} loop (lines 4 - 11) must iterate over each chip at most once.
     Therefore, this section of the algorithm is $\mathcal{O}(n)$.
 
@@ -40,18 +41,24 @@
     Subtracting $n\lg{n}$ from both sides when $c = 2$:
     \[n \le n\lg{n}\]
 
-    Therefore the algorithm is $\mathcal{O}(n\lg{n})$.
+    Therefore the algorithm is $\mathcal{O}(n\lg{n})$.\\
+
+    In terms of space, it is known that heapsort maintains an $\mathcal{O}(1)$ space complexity since it sorts in-place.
+    The rest of the algorithm remains $\mathcal{O}(1)$ in space as well, as the only additional data required are the $\id{left}$ and $\id{right}$ pointers, and the $\id{sum}$.
 
     \subsection{(b)}
     To begin, we must first define what would constitute the worst case.
     Since the black box returns \textbf{all} possible pairs of chips that add to the target, the worst case would be achieved when every possible pair of chips sums to the target.
     For this to occur, each chip must take on the value $\frac{target}{2}$ since this would allow any two chips to sum to the target value.
     At the very least, the black box is bound by the number of possible pairings that it must return.
+    \vspace{-4mm}
     For a set of $n$ chips, this value is calculated as:
-    \[\binom{n}{2} = \frac{n!}{2!(n-2)!} = \frac{(n-1)(n)}{2} = \frac{n^2-n}{2} = \mathcal{O}(n^2)\]
+    \[\binom{n}{2} = \frac{n!}{2!(n-2)!} = \frac{(n-1)(n)}{2} = \frac{n^2-n}{2} = \Omega(n^2)\]
 
+    \textbf{Q.E.D}
     \subsection{(c)}
     Consider the pseudocode below:
+    \begin{spacing}{1.2}
     \begin{codebox}
         \Procname{$\proc{FindBestChips}(C, target)$}
         \li $\proc{HeapSort}(C)$
@@ -79,10 +86,70 @@
             \End
         \li \Return $\id{closest-pair}$
     \end{codebox}
-
+    \end{spacing}
+    \vspace{5mm}
     Like part a), the implementation of heapsort forces this algorithm to $\mathcal{O}(n\lg{n})$ since this is heapsort's worst-case (and best-case) time complexity (CLRS, 3rd Edition, Exercise 6.4-4).
     The only difference between this algorithm and the algorithm in part a) is within the \textbf{while} loop (lines 4-15).
-    Instead of only checking if a correct pair is found, we must track the best pair (closest sum $\le$ target).
+    Instead of only checking if a correct pair is found, we must track the best pair (closest $\id{sum} \le \id{target}$).
     Regardless, in the worst case (no perfectly-summing chips) we still must iterate over each chip at most once.
     Therefore this section of the algorithm remains $\mathcal{O}(n)$.
-    By part a), the full algorithm is still $\mathcal{O}(n\lg{n})$.
+    By part a), the full algorithm is still $\mathcal{O}(n\lg{n})$. \\
+
+    Since, in terms of memory, the only difference between this algorithm and part a) are the $\id{closest-pair}$ and $\id{min-difference}$ variables, this algorithm remains $\mathcal{O}(1)$ in space. \\
+
+    \textbf{Inductive Proof of Algorithm Correctness:} \\
+    To preface, this proof only addresses the section of the algorithm that succeeds heapsort since it is known that the heapsort algorithm is correct.
+    Because of this, we assume that all arrays are pre-sorted.
+
+    \textbf{Basis:} \\
+    Consider the following sorted array: $A = \{1, 2\}$,
+    let $\id{target} = 4$.
+
+    After setting the $\id{left}$ and $\id{right}$ pointers to 1 and 2 respectively (lines 2, 3), the \textbf{while} loop is engaged.
+    The $\id{difference} = 4 - (1 + 2) = 1$, and the $\id{closest-pair}$ will be set as 1 and 2 since it is the first pair to be checked.
+    Next, $\id{left}$ will be incremented by 1 since $1 + 2 = 3 < \id{target}$ (lines 10, 11).
+    This will break the \textbf{while} loop's condition since $\id{left}$ is no longer less than $\id{right}$.
+    Finally, the $\id{closest-pair}$ is returned as $(1, 2)$, which is indeed the closest pair in the array whose sum does not exceed the target value.
+    Therefore, this algorithm is correct for the array $A = \{1, 2\}$.
+
+    \textbf{Inductive Hypothesis:}\\
+    Assume that this algorithm is correct for a sorted array $A$ of length $n$.
+
+    \textbf{Inductive Step:}\\
+    By adding an element to the sorted array $A$ (assuming it remains sorted), the arrays length increases to $n + 1$.
+    Let $k$ represent the value of the element that was added.
+    \vspace{1cm} \\
+    The value of $k$ can be:
+    \[k > \id{target} - \min(A)\]
+    \begin{center}
+        OR
+    \end{center}
+    \[k \le \id{target} - \min(A)\]
+
+    Where $\min(A)$ represents the smallest value in $A$ before $k$ was added. 
+    Beginning with the first case, ($k > \id{target} - min(A)$) by rearranging this inequality:
+
+    \[k + \min(A) > \id{target}\]
+
+    It can be shown that for all elements in $A$, $k$ will be too large to form an appropriate sum.
+    Therefore, by lines 12 and 13, it is guaranteed that $k$ will be iterated over, leaving the algorithm with an array that is effectively unchanged from before $k$ was added.
+
+    In the second case, $k$ may not affect the outcome that existed before it was added.
+    If this happens, then it will just be iterated over either by lines 12 and 13, or by lines 10 and 11.
+    However, if it happens that the addition of $k$ creates a new best pairing, $k$ will either be iterated over (and tracked by $\id{closest-pair}$)
+    or simply returned immediately if the its addition with another chip is equal to $\id{target}$.
+
+    Therefore the addition of some $k$ does not affect the correctness of the algorithm.
+
+    \textbf{Q.E.D}\\
+
+    \textbf{Proof of Termination:} \\
+    In lines 2 and 3, $\id{left}$ and $\id{right}$ are set to the start and end of the input array respectively.
+    Therefore, before entering the \textbf{while} loop, $\id{left} \le \id{right}$.
+    If equal, the loop will not be entered whatsoever, and an empty pair will be returned since no single chip can be used for both of the two broken chips.
+    Otherwise, given that $\id{left} > \id{right}$, the loop will be engaged.
+    In each iteration of the loop, the two values either approach each other or will be returned immediately if there is a perfectly summing pair.
+    If there is no perfectly summing pair, then either $\id{left}$ must be incremented or $\id{right}$ decremented in each iteration.
+    Therefore, for an input array of size $n$, it will take a maximum of $n$ iterations for $\id{left} = \id{right}$ and the termination of the \textbf{while} loop and algorithm.
+    
+    \textbf{Q.E.D}
