@@ -26,6 +26,7 @@
     \subsection{(e)}
     To implement \textbf{DeleteMin} and \textbf{Insert}, we can utilize the \textbf{Merge} procedure that runs in $\mathcal{O}(\log{n})$ time. The subtree starting at each node of an LH is also an LH or else the order and balance invariant would not be maintained which is why we can use the merge procedure here. Both \textbf{DeleteMin} and \textbf{Insert} run in $\mathcal{O}(\log{n})$ time because they call the \textbf{Merge} procedure once. For DeleteMin, since we know that the root node is the smallest node in the tree by the order invariant, we can remove the root node, so we are left with the root's two child sub-trees that are also LHs which can have the merge procedure applied to them to create a single LH. For Insert, we can imagine that the node being inserted is itself a LH. Since it needs to be placed into another LH, we can also use the Merge procedure to create a final LH.
     The following pseudocode assumes that the merge procedure returns the merged LH and that each node of an LH is also an LH
+        \begin{spacing}{1.2}
         \begin{codebox}
         \Procname{$\proc{DeleteMin}(H)$}
         \li $\id{l} \gets root.left$
@@ -36,4 +37,5 @@
         \Procname{$\proc{Insert}(H, i)$}
         \li $H \gets \proc{Merge}(H, i)$
         \end{codebox}
+        \end{spacing}
         
