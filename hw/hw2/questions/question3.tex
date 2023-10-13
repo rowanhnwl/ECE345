@@ -1,92 +1,141 @@
 
 \section{Question 3}
+    \begin{spacing}{1.2}
     \subsection{(a)} 
-    Assume $S_n$ represents sequence $S$ with size of $n$ elements:
-    \begin{codebox}
-        \Procname{$\proc{FindIntersection}(A_n, B_n, n)$}
-        \li $I =$ empty list
-        \li $a = 0$, $b = 0$, $most\_recent = -1$
-        \li \While $a < n$ and $b<n$
-            \Do
-                \li \If $A[a]$ is $B[b]$
-                \Then
-                    \li \If $A[a]$ is not $most\_recent$
+        Assume $S_n$ represents sequence $S$ with size of $n$ elements:
+        \begin{codebox}
+            \Procname{$\proc{FindIntersection}(A_n, B_n, n)$}
+            \li $I =$ empty list
+            \li $a = 0$, $b = 0$, $most\_recent = -1$
+            \li \While $a < n$ and $b<n$
+                \Do
+                    \li \If $A[a]$ is $B[b]$
                     \Then
-                        \li $I.insert(A[a])$
-                        \li $most\_recent = A[a]$
-                    \End
-                    \li $a = a + 1$
-                    \li $b = b + 1$
-                \li \ElseIf $A[a] < B[b]$
-                \Then
-                    \li $a = a + 1$
-                \li \ElseIf $A[a] > B[b]$
-                \Then
-                    \li $b = b + 1$
-                \End 
-            \End
-    \end{codebox}
-    \clearpage
-    \newcommand\continuecodebox{\global\codeboxcontinuedtrue}   
-    \begin{codebox}
-        \li \If $a$ is $n$
-        \Then
-            \li \For $b$ to $n-1$
-            \Then
-                \li \If $A[n-1]$ is $B[b]$ and $B[b]$ is not $most\_recent$
-                \Then
-                    \li $I.insert(B[b])$
-                    \li $most\_recent = B[b]$
+                        \li \If $A[a]$ is not $most\_recent$
+                        \Then
+                            \li $I.insert(A[a])$
+                            \li $most\_recent = A[a]$
+                        \End
+                        \li $a = a + 1$
+                        \li $b = b + 1$
+                    \li \ElseIf $A[a] < B[b]$
+                    \Then
+                        \li $a = a + 1$
+                    \li \ElseIf $A[a] > B[b]$
+                    \Then
+                        \li $b = b + 1$
+                    \End 
                 \End
-            \End
-        \li \ElseIf $b$ is $n$
-        \Then
-            \li \For $a$ to $n-1$
+            \li \If $a$ is $n$
             \Then
-                \li \If $A[a]$ is $B[n-1]$ and $A[a]$ is not $most\_recent$
+                \li \For $b$ to $n-1$
                 \Then
-                    \li $I.insert(A[a])$
-                    \li $most\_recent = A[a]$
-                \End
-            \End
-        \End
-        \li \Return $I$
-    \end{codebox}
-    
-    \subsection{(b)}
-    Assume $S_n$ represents sequence $S$ with size of $n$ elements:
-    \begin{codebox}
-        \Procname{$\proc{FindUnion}(A_n, B_n, n)$}
-        \li $I =$ empty list
-        \li $a = 0$, $b = 0$, $most\_recent = -1$
-        \li \While $a < n$ and $b<n$
-            \Do
-                \li \If $A[a]$ is $B[b]$
-                \Then
-                    \li \If $A[a] > most\_recent$
-                    \Then
-                        \li $I.insert(A[a])$
-                        \li $most\_recent = A[a]$
-                    \End
-                    \li $a = a + 1$
-                    \li $b = b + 1$
-                \li \ElseIf $A[a] < B[b]$
-                \Then
-                    \li \If $A[a] > most\_recent$
-                    \Then
-                        \li $I.insert(A[a])$
-                        \li $most\_recent = A[a]$
-                    \End
-                    \li $a = a + 1$
-                \li \ElseIf $A[a] > B[b]$
-                \Then
-                \li \If $B[b] > most\_recent$
+                    \li \If $A[n-1]$ is $B[b]$ and $B[b]$ is not $most\_recent$
                     \Then
                         \li $I.insert(B[b])$
                         \li $most\_recent = B[b]$
                     \End
-                    \li $b = b + 1$
-                \End 
+                \End
+            \li \ElseIf $b$ is $n$
+            \Then
+                \li \For $a$ to $n-1$
+                \Then
+                    \li \If $A[a]$ is $B[n-1]$ and $A[a]$ is not $most\_recent$
+                    \Then
+                        \li $I.insert(A[a])$
+                        \li $most\_recent = A[a]$
+                    \End
+                \End
             \End
-    \end{codebox}
+            \li \Return $I$
+        \end{codebox}
+    \end{spacing}
+    
+    \begin{spacing}{1.1}
+    \subsection{(b)}
+        Assume $S_n$ represents sequence $S$ with size of $n$ elements:
+        \begin{codebox}
+            \Procname{$\proc{FindUnion}(A_n, B_n, n)$}
+            \li $U =$ empty list
+            \li $a = 0$, $b = 0$, $most\_recent = -1$
+            \li \While $a < n$ and $b<n$
+                \Do
+                    \li \If $A[a]$ is $B[b]$
+                    \Then
+                        \li \If $A[a] > most\_recent$
+                        \Then
+                            \li $U.insert(A[a])$
+                            \li $most\_recent = A[a]$
+                        \End
+                        \li $a = a + 1$
+                        \li $b = b + 1$
+                    \li \ElseIf $A[a] < B[b]$
+                    \Then
+                        \li \If $A[a] > most\_recent$
+                        \Then
+                            \li $U.insert(A[a])$
+                            \li $most\_recent = A[a]$
+                        \End
+                        \li $a = a + 1$
+                    \li \ElseIf $A[a] > B[b]$
+                    \Then
+                    \li \If $B[b] > most\_recent$
+                        \Then
+                            \li $U.insert(B[b])$
+                            \li $most\_recent = B[b]$
+                        \End
+                        \li $b = b + 1$
+                    \End 
+                \End
+            \li \If $a$ is $n$
+            \Then
+                \li \For $b$ to $n-1$
+                \Then
+                    \li \If $A[n-1]<B[b]$ and $B[b]>most\_recent$
+                    \Then
+                        \li $U.insert(B[b])$
+                        \li $most\_recent = B[b]$
+                    \End
+                \End
+            \li \ElseIf $b$ is $n$
+            \Then
+                \li \For $a$ to $n-1$
+                \Then
+                    \li \If $A[a]>B[n-1]$ and $A[a]>most\_recent$
+                    \Then
+                        \li $U.insert(A[a])$
+                        \li $most\_recent = A[a]$
+                    \End
+                \End
+            \End
+            \li \Return $U$
+        \end{codebox}
+    \end{spacing}
+
+    \begin{spacing}{1.5}
     \subsection{(c)}
+        Assume $S_n$ represents sequence $S$ with size of $n$ elements:
+        \begin{codebox}
+            \Procname{$\proc{FindDiff}(A_n, B_n, n)$}
+            \li $D =$ empty list
+            \li $I = \proc{FindIntersection}(A_n, B_n, n)$
+            \li $a = 0$, $i = 0$, $size=I.size$, $most\_recent = -1$
+            \li \While $a < n$ and $i \leq size$
+                \Do
+                    \li \If $A[a]<I[i]$ or $i$ is $size$
+                    \Then
+                        \li \If $A[a]$ is not $most\_recent$
+                        \Then
+                            \li $D.insert(A[a])$
+                            \li $most\_recent = A[a]$
+                        \End
+                        \li $a = a + 1$
+                    \li \ElseIf $A[a]>I[i]$
+                    \Then
+                        \li $i = i + 1$
+                    \li \ElseNoIf
+                        \li $a = a + 1$
+                    \End 
+                \End
+        \end{codebox}
+    \end{spacing}
