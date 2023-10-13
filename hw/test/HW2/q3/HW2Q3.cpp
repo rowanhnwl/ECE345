@@ -82,21 +82,21 @@ void find_intersection (int size, Lists* all_lists) {
         }
     }
 
-    if (a_ptr == size) {
-        for (;b_ptr < size; b_ptr++)
-            if (all_lists->a_vec[size - 1] == all_lists->b_vec[b_ptr] && all_lists->b_vec[b_ptr] != most_recent) {
-                all_lists->intersection_list.push_back(all_lists->b_vec[b_ptr]);
-                most_recent = all_lists->b_vec[b_ptr];
-            }
-    }
+    // if (a_ptr == size) {
+    //     for (;b_ptr < size; b_ptr++)
+    //         if (all_lists->a_vec[size - 1] == all_lists->b_vec[b_ptr] && all_lists->b_vec[b_ptr] != most_recent) {
+    //             all_lists->intersection_list.push_back(all_lists->b_vec[b_ptr]);
+    //             most_recent = all_lists->b_vec[b_ptr];
+    //         }
+    // }
 
-    if (b_ptr == size) {
-        for (;a_ptr < size; a_ptr++)
-            if (all_lists->a_vec[a_ptr] == all_lists->b_vec[size - 1] && all_lists->a_vec[a_ptr] != most_recent) {
-                all_lists->intersection_list.push_back(all_lists->a_vec[a_ptr]);
-                most_recent = all_lists->a_vec[a_ptr];
-            }
-    }
+    // if (b_ptr == size) {
+    //     for (;a_ptr < size; a_ptr++)
+    //         if (all_lists->a_vec[a_ptr] == all_lists->b_vec[size - 1] && all_lists->a_vec[a_ptr] != most_recent) {
+    //             all_lists->intersection_list.push_back(all_lists->a_vec[a_ptr]);
+    //             most_recent = all_lists->a_vec[a_ptr];
+    //         }
+    // }
 
     for (int i : all_lists->intersection_list) {
         cout << i << "  ";
@@ -133,7 +133,7 @@ void find_diff (int size, Lists* all_lists, vector<int>* include, string diff_li
 
 int main() {
     vector<int> array_a = {1, 1, 2, 5, 6, 10, 10, 22, 31, 33};
-    vector<int> array_b = {2, 2, 7, 8, 10, 15, 17, 22, 43, 55};
+    vector<int> array_b = {2, 2, 7, 8, 10, 15, 17, 22, 33, 55};
     int size = array_a.size();
 
     Lists* lists = new Lists;

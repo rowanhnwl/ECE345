@@ -1,7 +1,7 @@
 
 \section{Question 3}
-    \begin{spacing}{1.2}
-    \subsection{(a)} 
+    \subsection{(a)}
+    \begin{spacing}{1.5}
         Assume $S_n$ represents sequence $S$ with size of $n$ elements:
         \begin{codebox}
             \Procname{$\proc{FindIntersection}(A_n, B_n, n)$}
@@ -26,33 +26,46 @@
                         \li $b = b + 1$
                     \End 
                 \End
-            \li \If $a$ is $n$
-            \Then
-                \li \For $b$ to $n-1$
-                \Then
-                    \li \If $A[n-1]$ is $B[b]$ and $B[b]$ is not $most\_recent$
-                    \Then
-                        \li $I.insert(B[b])$
-                        \li $most\_recent = B[b]$
-                    \End
-                \End
-            \li \ElseIf $b$ is $n$
-            \Then
-                \li \For $a$ to $n-1$
-                \Then
-                    \li \If $A[a]$ is $B[n-1]$ and $A[a]$ is not $most\_recent$
-                    \Then
-                        \li $I.insert(A[a])$
-                        \li $most\_recent = A[a]$
-                    \End
-                \End
-            \End
             \li \Return $I$
         \end{codebox}
     \end{spacing}
     
-    \begin{spacing}{1.1}
+    \textbf{Description and Complexity:}
+    
+    In this algorithm, we use pointers in both of our arrays to find the common elements between them.
+    The algorithm is a \textbf{while} loop to find the common ones until one of the pointers gets to the end of the array (lines 3 - 13).
+    This is simply done by inserting the number whenever the elements that our pointers point at have the same value.
+    And whenever the values are different, the pointer pointing at the smaller number would be incremented, hoping that it 
+    would point at a number closer (or maybe equal) to the other one. It is also necessary to keep updating the most recent value
+    that was added to the list to avoid adding duplicates. In terms of space complexity, we are adding a new array 
+    for the intersection with maximum size of $n$ (if the arrays are identical), resulting $\mathcal{O}(n)$ complexity. In terms of time, both pointers
+    increment towards the end of their arrays through the loops, which means it has $\mathcal{O}(n+n)=\mathcal{O}(n)$ time complexity in worst case scenario. 
+    
+    \textbf{Inductive Proof of Algorithm Correctness:} \\
+    \textbf{Basis:} \\
+    Consider the following arrays: $A=\{1\}$, $B=\{1\}$. In this case, our first value would be inserted during the first loop. Since both of our pointers are incremented up to
+    the size of the arrays, the \textbf{while} loop is ended. This means we are left with $I=\{1\}$ which is the correct answer. \\
+    \textbf{Inductive Hypothesis:} \\
+    Assume that the algorithm is correct for the two sorted arrays $A=\{a_0, a_1, \ldots, a_n\}$ and $B=\{b_0, b_1, \ldots, b_n\}$ when $1 \leq n \leq k-1$.
+    Now we need to prove that it is still correct for $A={a_0, a_1, \ldots, a_k}, B={b_0, b_1, \ldots, b_k}$. Let's also assume that the pointers
+    of arrays $A$ and $B$ are represented by $a$ and $b$ respectively. \\ 
+    \textbf{Inductive Step:} \\
+    Based on our inductive hypothesis, we can assume that the algorithm works correctly up to either $a_{k-1}$ or $b_{k-1}$. Let's assume that the pointer of 
+    array $A$ reaches the end first, which means that $\max(A) \leq \max(B)$. This is because the pointer of an array is incremented if and only if the value of its number
+    is less or equal to the value of the other pointer. In other words, pointer of $A$ can only get from $k$ to $k+1$ when the last element of $A$ is less or equal to
+    the current element of $B$ ($A[a_k] \leq B[b]$). Here we have two possibilities to analyze: \\
+    1. If $A[a_k] = B[b]$, then the values would be compared and added to the intersection list before the end of the \textbf{while} loop. And since this is the last element of
+    array $A$, there wouldn't be any common element left. \\
+    2. If $A[a_k] < B[b]$, then all the common elements have already been inserted since any number after $B[b]$ would be greater or equal to $B[b]$.\\
+    The same scenario would be valid in the opposite case, when the pointer of $B$ reaches the end first instead, which means that the algorithm is correct in either case.\\
+    \textbf{Q.E.D}
+
+    \textbf{Proof of Termination:} \\
+    The \textbf{while} loop ends when either of the pointers reaches the end of array (i.e. the pointer would be equal to the size of array, $n$). In each loop, at least one of the pointers is
+    getting incremented, meaning that it will take less than $n+n$ loops for the termination of the \textbf{while} loop.
+
     \subsection{(b)}
+    \begin{spacing}{1.1}
         Assume $S_n$ represents sequence $S$ with size of $n$ elements:
         \begin{codebox}
             \Procname{$\proc{FindUnion}(A_n, B_n, n)$}
@@ -112,17 +125,56 @@
         \end{codebox}
     \end{spacing}
 
-    \begin{spacing}{1.5}
+    \textbf{Description and Complexity:}
+    
+    In this algorithm, we use pointers in both of our arrays to find the union of them.
+    The algorithm starts with a \textbf{while} loop to insert all unique elements until one of the pointers gets to the end of the array (lines 3 - 19).
+    This is simply done by inserting the number whenever the elements that our pointers point at have different values.
+    And whenever the values are the same, only one of them would be added while both pointers get incremented. After the \textbf{while} loop,
+    as one of the pointers get to the end, the algorithm starts a \textbf{for} loop in the other array to insert all the values left (lines 20 - 29).
+    It is also necessary to keep updating the most recent value that was added to the list to avoid adding duplicates. In terms of space complexity, we are adding a new array 
+    for the union with maximum size of $n+n$ (if the arrays have no common elements), resulting $\mathcal{O}(n)$ complexity. In terms of time, both pointers
+    increment towards the end of their arrays through the loops, which means it has $\mathcal{O}(n+n)=\mathcal{O}(n)$ time complexity. 
+    
+    \textbf{Inductive Proof of Algorithm Correctness:} \\
+    \textbf{Basis:} \\
+    Consider the following arrays: $A=\{1\}$, $B=\{2\}$. In this case, the first value that would be added is $1$, since it is less than $2$. After that, as the
+    pointer in array $A$ reaches the end, we move to the \textbf{for} loop for array $B$, inserting all unique values from the current pointer to
+    the end of this array (in this case, only one element). This means we are left with $U=\{1, 2\}$ which is the correct answer. \\
+    \textbf{Inductive Hypothesis:} \\
+    Assume that the algorithm is correct for the two sorted arrays $A=\{a_0, a_1, \ldots, a_n\}$ and $B=\{b_0, b_1, \ldots, b_n\}$ when $1 \leq n \leq k-1$.
+    Now we need to prove that it is still correct for $A={a_0, a_1, \ldots, a_k}, B={b_0, b_1, \ldots, b_k}$. Let's also assume that the pointers
+    of arrays $A$ and $B$ are represented by $a$ and $b$ respectively. \\ 
+    \textbf{Inductive Step:} \\
+    Based on our inductive hypothesis, we can assume that the algorithm works correctly up to either $a_{k-1}$ or $b_{k-1}$. Let's assume that the pointer of 
+    array $A$ reaches the end first, which means that $\max(A) \leq \max(B)$. This is because the pointer of an array is incremented if and only if the value of its number
+    is less or equal to the value of the other pointer. In other words, pointer of $A$ can only get from $k$ to $k+1$ when the last element of $A$ is less or equal to
+    the current element of $B$ ($A[a_k] \leq B[b]$). Here we have two possibilities to analyze: \\
+    1. If $A[a_k] = B[b]$, then the values would be compared and added to the intersection list before the end of the \textbf{while} loop. And since this is the last element of
+    array $A$, there wouldn't be any element in this array to be added to our list. The \textbf{for} loop would then add all the values in array $B$ while making sure there isn't any duplicate
+    from $b+1$ up to $B[b_k]$ as expected. \\
+    2. If $A[a_k] < B[b]$, then the value of $A[a_k]$ would be inserted to the list at the end of the \textbf{while} loop. And since this is the last element of
+    array $A$, there wouldn't be any element in this array to be added to our list. The \textbf{for} loop would then add all the values in array $B$ while making sure there isn't any duplicate
+    from $b$ up to $B[b_k]$ as expected. \\
+    The same scenario would be valid in the opposite case, when the pointer of $B$ reaches the end first instead, which means that the algorithm is correct in either case.\\
+    \textbf{Q.E.D}
+
+    \textbf{Proof of Termination:} \\
+    The \textbf{while} loop ends when either of the pointers reaches the end of array (i.e. the pointer would be equal to the size of array, $n$). In each loop, at least one of the pointers is
+    getting incremented, meaning that it will take less than $n+n$ loops for the termination of the \textbf{while} loop. The \textbf{for} loop will also be terminated in maximum of $n$ loops as it gets
+    incremented every single time with exit point of when it is equal to the size of the array.
+
     \subsection{(c)}
+    \begin{spacing}{1.5}
         Assume $S_n$ represents sequence $S$ with size of $n$ elements:
         \begin{codebox}
             \Procname{$\proc{FindDiff}(A_n, B_n, n)$}
             \li $D =$ empty list
             \li $I = \proc{FindIntersection}(A_n, B_n, n)$
             \li $a = 0$, $i = 0$, $size=I.size$, $most\_recent = -1$
-            \li \While $a < n$ and $i \leq size$
+            \li \While $a < n$
                 \Do
-                    \li \If $A[a]<I[i]$ or $i$ is $size$
+                    \li \If $i$ is $size$ or $A[a]<I[i]$
                     \Then
                         \li \If $A[a]$ is not $most\_recent$
                         \Then
@@ -137,5 +189,41 @@
                         \li $a = a + 1$
                     \End 
                 \End
+            \li \Return $D$
         \end{codebox}
     \end{spacing}
+
+    \textbf{Description and Complexity:}
+    
+    In this algorithm, we first find the intersection between the two arrays using the algorithm provided in part a). Then, we use pointers in both of our 
+    arrays ($A$ and $I$, the intersection) to find the unique elements that are not in array $B$.
+    The algorithm includes a \textbf{while} loop to find the elements in array $A$ that are not in $I$ (i.e. not common with $B$) until the end of array $A$ (lines 4 - 13).
+    This is simply done by inserting the number whenever the element pointed in array $A$ is smaller than the one pointed in $I$.
+    And whenever its the other way around, the intersection array pointer would be incremented, hoping that it 
+    would point at a number closer (or maybe equal) to the other one so we can decide whether it is just in $A$ or in both $A$ and $I$. It is also necessary to keep updating the most recent value
+    that was added to the list to avoid adding duplicates. In terms of space complexity, we are adding a new array 
+    for the difference with maximum size of $n$ (if the arrays have no element in common) and an array for finding the intersection, resulting $\mathcal{O}(n+n)=\mathcal{O}(n)$ complexity. In terms of time, both pointers
+    increment towards the end of their arrays through the loops, which means it has $\mathcal{O}(n)+\mathcal{O}(n)=\mathcal{O}(n)$ time complexity. 
+    
+    \textbf{Inductive Proof of Algorithm Correctness:} \\
+    \textbf{Basis:} \\
+    Consider the following arrays: $A=\{1\}$, $B=\{2\}$. In this case, there is no common element between the two, which means $I=\{ \O \}$.
+    In the \textbf{while} loop, since the pointer is the same as the size (both equal to 0), the first element in $A$ is inserted and the pointer is incremented. 
+    The algorithm ends here as the pointer of $A$ has reached the end of the array. This means we are left with $D=\{1\}$ which is the correct answer. \\
+    \textbf{Inductive Hypothesis:} \\
+    Assume that the algorithm is correct for the two sorted arrays $A=\{a_0, a_1, \ldots, a_n\}$, $B=\{b_0, b_1, \ldots, b_n\}$ and $I=\{i_0, i_1, \ldots, b_m\}$ when $1 \leq m \leq n \leq k-1$.
+    Now we need to prove that it is still correct for $A={a_0, a_1, \ldots, a_k}, B={b_0, b_1, \ldots, b_k}$. Let's also assume that the pointers
+    of arrays $A$ and $I$ are represented by $a$ and $i$ respectively. \\ 
+    \textbf{Inductive Step:} \\
+    Based on our inductive hypothesis, we can assume that the algorithm works correctly up to $a_{k-1}$. We know that $\max(A) \geq \max(I)$. This is because the elements of $I$ are already in $A$, meaning that the maximum value of $A$ cannot be smaller than
+    the maximum value of $I$. Here we have two possibilities to analyze: \\
+    1. If $A[a_k] = \max(I)$, then both pointers will be incremented until they both point at their last element. In that loop, since they values are equal,
+    no element will be inserted and the \textbf{while} loop will be ended as the pointer $a$ would reach the end of the array \\
+    2. If $A[a_k] > \max(I)$, then because of the \textbf{else if} statement, the pointer $i$ would be incremented until it reaches the end of the array $I$. Then, since $i$ is now equal to $size$, $A[a_k]$ would be
+    inserted to the list as an element that is not commone between $A$ and $B$. \\
+    Both cases will give us a correct result, which means that the algorithm is correct.
+    \textbf{Q.E.D}
+
+    \textbf{Proof of Termination:} \\
+    The \textbf{while} loop ends when pointer of array $A$ reaches the end of the array (i.e. the pointer would be equal to the size of array, $n$). Until $I$ pointer reaches the end of the array, at least one of the pointers is
+    getting incremented in our while loop. After that, only the $A$ pointer gets incremented, meaning that it will take less than $n+n$ loops for the termination of the \textbf{while} loop.
