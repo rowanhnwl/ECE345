@@ -1,9 +1,11 @@
 \section{Question 2}
     \subsection{(a)}
+    \vspace{-2mm}
     The procedure has three recursive calls that split the input in different ways. Other than this, only two if statements are called that perform a comparison and a swap which take only $\Theta(1)$ time. We can simply add up the work being done and scale the inputs to the recursive calls accordingly.
     $T(n) = 2T(n/2) + T(n - 1) + \Theta(1)$
-
+    \vspace{-2mm}
     \subsection{(b)}
+    \vspace{-2mm}
     \textbf{Induction Hypothesis:} after calling sort(A, i, j), with j - i $<$ k, A[i..j] is sorted.
 
     \textbf{Basis:} If k = 0, then i = j and the subarray has one index which is trivially already sorted.
@@ -17,6 +19,7 @@
 
     The second if statement takes the largest elements from both sorted halves of the array and places the biggest one at the end of the array. This means only A[i..j-1] needs to be sorted.
 
-    The last call to sort(A, i, j - 1) ensures that the rest of the array is sorted by the inductive hypothesis if j - 1 - i $<$ k + 1 which it is in this case. QED.
+    The last call to sort(A, i, j - 1) ensures that the rest of the array is sorted by the inductive hypothesis if j - 1 - i $<$ k + 1 which it is in this case.\\
+    \textbf{Q.E.D}
 
 

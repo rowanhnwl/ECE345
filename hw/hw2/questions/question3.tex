@@ -1,7 +1,7 @@
 
 \section{Question 3}
     \subsection{(a)}
-    \begin{spacing}{1.5}
+    \begin{spacing}{1.2}
         Assume $S_n$ represents sequence $S$ with size of $n$ elements:
         \begin{codebox}
             \Procname{$\proc{FindIntersection}(A_n, B_n, n)$}
@@ -29,17 +29,17 @@
             \li \Return $I$
         \end{codebox}
     \end{spacing}
-    
+    \vspace{5mm}
     \textbf{Description and Complexity:}
     
     In this algorithm, we use pointers in both of our arrays to find the common elements between them.
-    The algorithm is a \textbf{while} loop to find the common ones until one of the pointers gets to the end of the array (lines 3 - 13).
+    The algorithm is a \textbf{while} loop to find the common elements until one of the pointers gets to the end of the array (lines 3 - 13).
     This is simply done by inserting the number whenever the elements that our pointers point at have the same value.
     And whenever the values are different, the pointer pointing at the smaller number would be incremented, hoping that it 
     would point at a number closer (or maybe equal) to the other one. It is also necessary to keep updating the most recent value
     that was added to the list to avoid adding duplicates. In terms of space complexity, we are adding a new array 
-    for the intersection with maximum size of $n$ (if the arrays are identical), resulting $\mathcal{O}(n)$ complexity. In terms of time, both pointers
-    increment towards the end of their arrays through the loops, which means it has $\mathcal{O}(n+n)=\mathcal{O}(n)$ time complexity in worst case scenario. 
+    for the intersection with a maximum size of $n$ (if the arrays are identical), resulting $\mathcal{O}(n)$ complexity. In terms of time, both pointers
+    increment towards the end of their arrays through the loops, which means it has $\mathcal{O}(n+n)=\mathcal{O}(n)$ time complexity in the worst-case scenario. \\
     
     \textbf{Inductive Proof of Algorithm Correctness:} \\
     \textbf{Basis:} \\
@@ -58,14 +58,16 @@
     array $A$, there wouldn't be any common element left. \\
     2. If $A[a_k] < B[b]$, then all the common elements have already been inserted since any number after $B[b]$ would be greater or equal to $B[b]$.\\
     The same scenario would be valid in the opposite case, when the pointer of $B$ reaches the end first instead, which means that the algorithm is correct in either case.\\
-    \textbf{Q.E.D}
+    \textbf{Q.E.D} \\
 
     \textbf{Proof of Termination:} \\
     The \textbf{while} loop ends when either of the pointers reaches the end of array (i.e. the pointer would be equal to the size of array, $n$). In each loop, at least one of the pointers is
     getting incremented, meaning that it will take less than $n+n$ loops for the termination of the \textbf{while} loop.
-
+    \pagebreak
+    \vspace{-7mm}
     \subsection{(b)}
-    \begin{spacing}{1.1}
+    \vspace{-2mm}
+    \begin{spacing}{1.2}
         Assume $S_n$ represents sequence $S$ with size of $n$ elements:
         \begin{codebox}
             \Procname{$\proc{FindUnion}(A_n, B_n, n)$}
@@ -124,7 +126,7 @@
             \li \Return $U$
         \end{codebox}
     \end{spacing}
-
+    %\vspace{12mm}
     \textbf{Description and Complexity:}
     
     In this algorithm, we use pointers in both of our arrays to find the union of them.
@@ -134,7 +136,7 @@
     as one of the pointers get to the end, the algorithm starts a \textbf{for} loop in the other array to insert all the values left (lines 20 - 29).
     It is also necessary to keep updating the most recent value that was added to the list to avoid adding duplicates. In terms of space complexity, we are adding a new array 
     for the union with maximum size of $n+n$ (if the arrays have no common elements), resulting $\mathcal{O}(n)$ complexity. In terms of time, both pointers
-    increment towards the end of their arrays through the loops, which means it has $\mathcal{O}(n+n)=\mathcal{O}(n)$ time complexity. 
+    increment towards the end of their arrays through the loops, which means it has $\mathcal{O}(n+n)=\mathcal{O}(n)$ time complexity. \\
     
     \textbf{Inductive Proof of Algorithm Correctness:} \\
     \textbf{Basis:} \\
@@ -157,7 +159,7 @@
     array $A$, there wouldn't be any element in this array to be added to our list. The \textbf{for} loop would then add all the values in array $B$ while making sure there isn't any duplicate
     from $b$ up to $B[b_k]$ as expected. \\
     The same scenario would be valid in the opposite case, when the pointer of $B$ reaches the end first instead, which means that the algorithm is correct in either case.\\
-    \textbf{Q.E.D}
+    \textbf{Q.E.D} \\
 
     \textbf{Proof of Termination:} \\
     The \textbf{while} loop ends when either of the pointers reaches the end of array (i.e. the pointer would be equal to the size of array, $n$). In each loop, at least one of the pointers is
@@ -165,7 +167,7 @@
     incremented every single time with exit point of when it is equal to the size of the array.
 
     \subsection{(c)}
-    \begin{spacing}{1.5}
+    \begin{spacing}{1.2}
         Assume $S_n$ represents sequence $S$ with size of $n$ elements:
         \begin{codebox}
             \Procname{$\proc{FindDiff}(A_n, B_n, n)$}
@@ -192,7 +194,7 @@
             \li \Return $D$
         \end{codebox}
     \end{spacing}
-
+    \vspace{5mm}
     \textbf{Description and Complexity:}
     
     In this algorithm, we first find the intersection between the two arrays using the algorithm provided in part a). Then, we use pointers in both of our 
@@ -203,7 +205,7 @@
     would point at a number closer (or maybe equal) to the other one so we can decide whether it is just in $A$ or in both $A$ and $I$. It is also necessary to keep updating the most recent value
     that was added to the list to avoid adding duplicates. In terms of space complexity, we are adding a new array 
     for the difference with maximum size of $n$ (if the arrays have no element in common) and an array for finding the intersection, resulting $\mathcal{O}(n+n)=\mathcal{O}(n)$ complexity. In terms of time, both pointers
-    increment towards the end of their arrays through the loops, which means it has $\mathcal{O}(n)+\mathcal{O}(n)=\mathcal{O}(n)$ time complexity. 
+    increment towards the end of their arrays through the loops, which means it has $\mathcal{O}(n)+\mathcal{O}(n)=\mathcal{O}(n)$ time complexity. \\
     
     \textbf{Inductive Proof of Algorithm Correctness:} \\
     \textbf{Basis:} \\
@@ -222,7 +224,7 @@
     2. If $A[a_k] > \max(I)$, then because of the \textbf{else if} statement, the pointer $i$ would be incremented until it reaches the end of the array $I$. Then, since $i$ is now equal to $size$, $A[a_k]$ would be
     inserted to the list as an element that is not commone between $A$ and $B$. \\
     Both cases will give us a correct result, which means that the algorithm is correct.
-    \textbf{Q.E.D}
+    \textbf{Q.E.D} \\
 
     \textbf{Proof of Termination:} \\
     The \textbf{while} loop ends when pointer of array $A$ reaches the end of the array (i.e. the pointer would be equal to the size of array, $n$). Until $I$ pointer reaches the end of the array, at least one of the pointers is
