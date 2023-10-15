@@ -5,11 +5,13 @@
 
 #include <hashtables.h>
 
+#define GOLDEN_RATIO (float)((1 + sqrt(5)) / 2)
+
 int main(void){
-    int arr[] = {27, 1, 35, 5, 16, 2, 45, 36, 19, 31, 3, 43, 6, 13, 28, 20, 37, 12, 22, 38, 4, 8, 9, 25, 51};
+    int arr[] = {27, 1, 35, 5, 16, 2, 45, 36, 19, 31, 3, 43, 6, 13, 28, 74, 15, 32, 14, 20, 37, 12, 22, 38, 4, 8, 9, 25, 51};
     int asize = sizeof(arr) / sizeof(arr[0]);
 
-    StandardCHT* chained_HT = create_CHT(arr, asize, 'd');
+    StandardCHT* chained_HT = create_CHT(arr, asize, 'm');
     print_ht(chained_HT);
 
     free_cht(chained_HT);
@@ -29,22 +31,7 @@ void print_ht(StandardCHT* cht){
 }
 
 int get_m(int* a, int s){
-    int max = -INT_MAX;
-    
-    for (int i = 0; i < s; i++){
-        if (a[i] > max){
-            max = a[i];
-        }
-    }
-
-    int half = max / 2;
-    
-    if (half % 2 == 0){
-        return half - 1;
-    }
-    else {
-        return half;
-    }
+    return (int)(1.3 * s);
 }
 
 int hash_divide(int k, int m){
@@ -52,10 +39,9 @@ int hash_divide(int k, int m){
 }
 
 int hash_multiply(int k, int m){
-    float A = 0.31415;
     double t;
 
-    float md = modf(k * A, &t);
+    float md = modf(k * GOLDEN_RATIO, &t);
     return (int)(m * md);
 }
 
