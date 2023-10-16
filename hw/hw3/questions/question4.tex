@@ -1,3 +1,114 @@
 \section{Question 4}
     \subsection{(a)}
     \subsection{(b)}
+    The answer to this problem will be shown through a progression of algorithms which output the number of deadlines handled by Xun given optimal choices, from the most time-complex to the least.
+    For the initial approach to this problem, consider the pseudocode below:
+    \begin{spacing}{1.2}
+        \begin{codebox}
+            \Procname{$\proc{HomeworkMinimax-Worst}(d, i, j, D, \id{Xsum}, \id{Worker})$}
+            \li \If $j - i < 3D$
+            \Then
+                \li \If $\id{Worker} = \id{Xun}$
+                \Then
+                    \li $\id{Xsum} = \id{Xsum} + \proc{Sum}(d, i, j)$
+                \End
+                \li \Return $\id{Xsum}$
+            \End
+
+            \li \If $\id{Worker} = \id{Xun}$
+            \Then
+                \li $\id{max-deadlines} = -\infty$
+                \li \For $\id{X} = 1$ \To $3D$
+                \Do
+                    \li $\id{new-i} = i + \id{X} + 1$
+                    \li $\id{new-D} = \max(\id{X}, D)$
+                    \li $\id{new-Xsum} = \id{Xsum} + \proc{Sum}(d, i, \id{X})$
+                    \li $\id{deadlines} = \proc{HomeworkMinimax-Worst}(d, \id{new-i}, j,\id{new-D}, \id{new-Xsum}, \id{Yuntao})$
+                    \li $\id{max-deadlines} = \max(\id{max-deadlines}, \id{deadlines})$
+                \End
+                \li \Return $\id{max-deadlines}$
+            \End
+
+            \li \If $\id{Worker} = \id{Yuntao}$
+            \Then
+                \li $\id{min-deadlines} = \infty$
+                \li \For $\id{X} = 1$ \To $3D$
+                \Do
+                    \li $\id{new-i} = i + \id{X} + 1$
+                    \li $\id{new-D} = \max(\id{X}, D)$
+                    \li $\id{deadlines} = \proc{HomeworkMinimax-Worst}(d, \id{new-i}, j,\id{new-D}, \id{Xsum}, \id{Xun})$
+                    \li $\id{min-deadlines} = \min(\id{min-deadlines}, \id{deadlines})$
+                \End
+                \li \Return $\id{min-deadlines}$
+            \End
+        \end{codebox}
+    \end{spacing}
+    \vspace{7mm}
+    \textbf{Explanation of $\proc{HomeworkMinimax-Worst}$:}\\
+    The pseudocode above uses the minimax principle, where one person is trying to maximize some score, and the other is trying to minimize it.
+    In this case, the score in question is the total number of deadlines handled by Xun, where Xun is also the person who is trying to maximize the score.
+    The base case in this recursive function is when the size of the passed range ($\id{i} - \id{j}$) is less than or equal to $3D$.
+    This is because both Xun and Yuntao choose optimally, so if either of them have the chance to take the remainder of the deadlines, then they will.
+
+    Initially, this function will be called as:
+    \begin{center}
+        $\proc{HomeworkMinimax-Worst}(d, 1, N, 1, 0, \id{Xun})$
+    \end{center}
+    This passes in the full array of deadlines, sets $D = 1$, the number of Xun's deadlines ($\id{Xsum}$) to 0, and sets Xun as the person currently working.
+    When Xun is working (lines 5 - 13), each value of $X$, $1 \le X \le 3D$ is tried by calling the function recursively,
+    now with $X + 1$ as the new start of the deadline array, $D = \max(X, D)$, the sum of deadlines from $i$ to $X$ is added to $\id{Xsum}$, and finally the worker is now Yuntao.
+    Xun's tests return the maximum number of deadlines possible for a certain starting point in the deadline list, given that Yuntao is also making optimal decisions.
+
+    When it is Yuntao's turn (lines 14 - 21), he is trying to minimize the number of deadlines handled by Xun.
+    This part of the algorithm is fundamentally the same as Xun's, however instead of returning a recursive maximum, it returns a recursive minimum.
+    Also, instead of updating $\id{Xsum}$, it simply is left as how it was passed. This is because Yuntao is \textbf{taking away} $X$ deadlines from Xun,
+    not adding them. \\
+
+    There are two main reasons why this algorithm is the ``worst''.
+    First, each time that a sum is computed, the array of deadlines must be iterated through:
+
+    \begin{spacing}{1.2}
+        \begin{codebox}
+            \Procname{$\proc{Sum}(d, i, j)$}
+            \li $\id{sum} = 0$
+            \li \For $x = i$ \To j
+            \Do
+                \li $\id{sum} = \id{sum} + d[x]$
+            \End
+            \li \Return $\id{sum}$
+        \end{codebox}
+    \end{spacing}
+
+    Asymptotically, the $\proc{Sum}$ function is $\mathcal{O}(n)$ in time since the distance between $i$ and $j$ is only bounded by the size of $d$.
+    This issue can be mitigated through the use of \textbf{dynamic programming}.
+    Specifically, we can use a bottom up approach to store the sum of each possible sub-array for $\mathcal{O}(1)$ use in $\proc{HomeworkMinimax}$.
+
+    \begin{spacing}{1.2}
+        \begin{codebox}
+            \Procname{$\proc{GetSubArraySums}(d, N)$}
+            \li Let $s$ by an $N \times N$ array of zeros
+
+            \li \For $i = 1$ \To $N$
+            \Do
+                \li $s[i, i] = d[i]$
+            \End
+
+            \li \For $l = 2$ \To $N$
+            \Do
+                \li \For $i = 1$ \To $N - l + 1$
+                \Do
+                    \li $j = i + l - 1$
+                    \li $m[i, j] = m[i, j - 1] + m[j, j]$
+                \End
+            \End
+            \li \Return $m$
+        \end{codebox}
+    \end{spacing}
+    \vspace{5mm}
+    In the algorithm above, lines 2 and 3 first find the sums of the smallest possible sub-arrays, which are single indices.
+    From there, the \textbf{for} loop at line 4 specifies the size of the next sub-arrays whose sums will be calculated.
+    For the corresponding size, $l$, the nested \textbf{for} loop (lines 5 - 7) finds two values in $s$ which will directly add up to the correct sum.
+    For example, it will calculate the sum of a sub-array from indices $i$ to $j$, by adding the sums of the sub-arrays from $i$ to $j - 1$ and $j$ to $j$.
+    Since the sub-arrays are calculated in increasing order of length (line 4) there will have already been sums stored for the sub-arrays from $i$ to $j - 1$ and $j$ to $j$.
+    Since there are $\binom{N}{2}$ total sub-arrays, the space complexity of this algorithm is $\mathcal{O}(n^2)$.
+    In terms of time, the bottom-up approach allows this algorithm to be $\mathcal{O}(n^2)$ as well, since each $m[i, j]$ takes $\mathcal{O}(1)$ to calculate.
