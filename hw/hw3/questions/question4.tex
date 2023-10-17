@@ -5,12 +5,12 @@
     For the initial approach to this problem, consider the pseudocode below:
     \begin{spacing}{1.2}
         \begin{codebox}
-            \Procname{$\proc{HomeworkMinimax-Worst}(d, i, j, D, \id{Xsum}, \id{Worker})$}
-            \li \If $j - i < 3D$
+            \Procname{$\proc{Q4b-Worst}(d, i, N, D, \id{Xsum}, \id{Worker})$}
+            \li \If $N - i < 3D$
             \Then
                 \li \If $\id{Worker} = \id{Xun}$
                 \Then
-                    \li $\id{Xsum} = \id{Xsum} + \proc{Sum}(d, i, j)$
+                    \li $\id{Xsum} = \id{Xsum} + \proc{Sum}(d, i, N)$
                 \End
                 \li \Return $\id{Xsum}$
             \End
@@ -23,7 +23,7 @@
                     \li $\id{new-i} = i + \id{X} + 1$
                     \li $\id{new-D} = \max(\id{X}, D)$
                     \li $\id{new-Xsum} = \id{Xsum} + \proc{Sum}(d, i, \id{X})$
-                    \li $\id{deadlines} = \proc{HomeworkMinimax-Worst}(d, \id{new-i}, j,\id{new-D}, \id{new-Xsum}, \id{Yuntao})$
+                    \li $\id{deadlines} = \proc{Q4b-Worst}(d, \id{new-i}, N, \id{new-D}, \id{new-Xsum}, \id{Yuntao})$
                     \li $\id{max-deadlines} = \max(\id{max-deadlines}, \id{deadlines})$
                 \End
                 \li \Return $\id{max-deadlines}$
@@ -36,7 +36,7 @@
                 \Do
                     \li $\id{new-i} = i + \id{X} + 1$
                     \li $\id{new-D} = \max(\id{X}, D)$
-                    \li $\id{deadlines} = \proc{HomeworkMinimax-Worst}(d, \id{new-i}, j,\id{new-D}, \id{Xsum}, \id{Xun})$
+                    \li $\id{deadlines} = \proc{Q4b-Worst}(d, \id{new-i}, N,\id{new-D}, \id{Xsum}, \id{Xun})$
                     \li $\id{min-deadlines} = \min(\id{min-deadlines}, \id{deadlines})$
                 \End
                 \li \Return $\id{min-deadlines}$
@@ -44,7 +44,7 @@
         \end{codebox}
     \end{spacing}
     \vspace{7mm}
-    \textbf{Explanation of $\proc{HomeworkMinimax-Worst}$:}\\
+    \textbf{Explanation of $\proc{Q4b-Worst}$:}\\
     The pseudocode above uses the minimax principle, where one person is trying to maximize some score, and the other is trying to minimize it.
     In this case, the score in question is the total number of deadlines handled by Xun, where Xun is also the person who is trying to maximize the score.
     The base case in this recursive function is when the size of the passed range ($\id{i} - \id{j}$) is less than or equal to $3D$.
@@ -52,7 +52,7 @@
 
     Initially, this function will be called as:
     \begin{center}
-        $\proc{HomeworkMinimax-Worst}(d, 1, N, 1, 0, \id{Xun})$
+        $\proc{Q4b-Worst}(d, 1, N, 1, 0, \id{Xun})$
     \end{center}
     This passes in the full array of deadlines, sets $D = 1$, the number of Xun's deadlines ($\id{Xsum}$) to 0, and sets Xun as the person currently working.
     When Xun is working (lines 5 - 13), each value of $X$, $1 \le X \le 3D$ is tried by calling the function recursively,
@@ -64,6 +64,8 @@
     Also, instead of updating $\id{Xsum}$, it simply is left as how it was passed. This is because Yuntao is \textbf{taking away} $X$ deadlines from Xun,
     not adding them. \\
 
+
+    \textbf{Analysis of $\proc{Q4b-Worst}$:}\\
     There are two main reasons why this algorithm is the ``worst''.
     First, each time that a sum is computed, the array of deadlines must be iterated through:
 
@@ -78,14 +80,37 @@
             \li \Return $\id{sum}$
         \end{codebox}
     \end{spacing}
-
+    \vspace{5mm}
     Asymptotically, the $\proc{Sum}$ function is $\mathcal{O}(n)$ in time since the distance between $i$ and $j$ is only bounded by the size of $d$.
-    This issue can be mitigated through the use of \textbf{dynamic programming}.
-    Specifically, we can use a bottom up approach to store the sum of each possible sub-array for $\mathcal{O}(1)$ use in $\proc{HomeworkMinimax}$.
+
+    The second reason why $\proc{Q4b-Worst}$ is poor, is because of the number of recursive calls that it makes.
+    For each sub-array, there is some chosen $X$ that divides it into two more sub-arrays, $d[i \To X]$ and $d[X + 1 \To N]$.
+    We can therefore express the number of sub-array divisions, $S$, that occurs as:
+    
+    \[S(n) = \begin{cases}
+            1 \Rightarrow n = 1 \\
+            \sum_{X=1}^{n - 1}(S(X) + S(n - X)) \Rightarrow n \ge 2
+    \end{cases}\]
+
+    By expanding and simplifying the sum in the second case, we get:
+    \[S(n) = \begin{cases}
+        1 \Rightarrow n = 1 \\
+        2\sum_{X=1}^{n - 1}S(X) \Rightarrow n \ge 2
+    \end{cases}\]
+
+    This sum can be simplified to (CLRS, 3rd Edition, Pg. 364, Eqn. 15.4):
+    \[2\sum_{X=1}^{n - 1}S(X) = 2(2^{n-1}) = 2^n\]
+
+    Therefore, it is noted that the number of recursive calls that are required grows exponentially with the size of the input array $d$.
+    Since, for each recursive division, a sum must be calculated (in $\mathcal{O}(n)$ time), the total time complexity of this algorithm is asymptotically $\mathcal{O}(n2^n)$.\\
+
+    \textbf{Introducing dynamic programming:}
+    The aforementioned issues can be mitigated through the use of dynamic programming.
+    To begin, we can use a bottom-up approach to store the sum of each possible sub-array for $\mathcal{O}(1)$ use in the $\proc{Q4b}$ algorithm.
 
     \begin{spacing}{1.2}
         \begin{codebox}
-            \Procname{$\proc{GetSubArraySums}(d, N)$}
+            \Procname{$\proc{BottomUpSums}(d, N)$}
             \li Let $s$ by an $N \times N$ array of zeros
 
             \li \For $i = 1$ \To $N$
@@ -98,10 +123,10 @@
                 \li \For $i = 1$ \To $N - l + 1$
                 \Do
                     \li $j = i + l - 1$
-                    \li $m[i, j] = m[i, j - 1] + m[j, j]$
+                    \li $s[i, j] = s[i, j - 1] + s[j, j]$
                 \End
             \End
-            \li \Return $m$
+            \li \Return $s$
         \end{codebox}
     \end{spacing}
     \vspace{5mm}
@@ -112,3 +137,147 @@
     Since the sub-arrays are calculated in increasing order of length (line 4) there will have already been sums stored for the sub-arrays from $i$ to $j - 1$ and $j$ to $j$.
     Since there are $\binom{N}{2}$ total sub-arrays, the space complexity of this algorithm is $\mathcal{O}(n^2)$.
     In terms of time, the bottom-up approach allows this algorithm to be $\mathcal{O}(n^2)$ as well, since each $m[i, j]$ takes $\mathcal{O}(1)$ to calculate.
+
+    Next, we can address the issue of how many recursive calls are made.
+    The dynamic programming approach that must be used is top-down, or ``memoization''.
+    It is important to note that the bottom-up approach can not be used for this task since the possible outcomes given a specific sub-array depend on the value of $D$ (a value that is updated from the top-down) that is passed.
+    Therefore, a structure that we can use to store such data is a hash table, where the key is a tuple of three values ($\id{Worker}$, $D$, $i$), and the value is the outcome given the respective configuration.
+    This tuple contains $i$, the starting point of the remainder of the array after some set of deadlines are chosen, the corresponding $D$ value, and the worker (Xun or Yuntao) whose turn is next.
+
+    This addition greatly reduces the number of recursive calls that are made.
+    In short, there are a total of $n$ sub-arrays that span some index $i$ to the end of the full array.
+    Letting $k$ represent the number of possible values $D$ may take, the total number of recursive calls that needs to be made is $\mathcal{O}(kn)$.
+    However, since the value of $D$ is only bounded by $n$, we can express the new total number of recursive calls as $\mathcal{O}(n^2)$.
+
+    Consider the pseudocode below:
+
+    \begin{spacing}{1.2}
+        \begin{codebox}
+        \Procname{$\proc{InitMemo}(N)$}
+        \li Let $m$ be a hash table that takes keys of three-integer tuples
+        \li \For $D = 1$ \To $N$
+        \Do
+            \li \For $i = 1$ \To $N$
+            \Do
+                \li $m[(\id{Xun}, D, i)] = -1$
+                \li $m[(\id{Yuntao}, D, i)] = -1$
+            \End
+        \End
+        \li \Return $m$
+        \end{codebox}
+    \end{spacing}
+    \vspace{5mm}
+
+    The above pseudocode shows how the hash table used to memoize the tuples would be initialized, with each unseen configuration set to -1.
+    
+    We must also consider the space requirements of this incorporation. Since we are storing a single integer for $2n^2$ possible pairs, the space complexity of this structure is $\mathcal{O}(n^2)$. \\
+
+    Finally, let us consider a much faster algorithm:
+    
+    \begin{spacing}{1.2}
+        \begin{codebox}
+            \Procname{$\proc{Q4b-Better}(d, i, N, D, \id{Xsum}, \id{Worker}, s, m)$}
+            \li \If $N - i < 3D$
+            \Then
+                \li \If $\id{Worker} = \id{Xun}$
+                \Then
+                    \li $\id{Xsum} = \id{Xsum} + s[i, N]$ \Comment{Getting a sum in $\mathcal{O}(1)$ time}
+                \End
+                \li \Return $\id{Xsum}$
+            \End
+
+            \li \If $\id{Worker} = \id{Xun}$
+            \Then
+                \li $\id{max-deadlines} = -\infty$
+                \li \For $\id{X} = 1$ \To $3D$
+                \Do
+                    \li \If $m[(\id{Yuntao}, D, X + 1)] \ne -1$ \Comment{Checking for memoization}
+                    \Then
+                        \li $\id{deadlines} = m[(\id{Yuntao}, D, X + 1)]$ \Comment{Memoized - no recursive call needed}
+                    \li \Else
+                        \li $\id{new-Xsum} = \id{Xsum} + s[i, X]$ \Comment{Getting a sum in $\mathcal{O}(1)$ time}
+                        \li $\id{deadlines} = \proc{Q4b-Better}(d, i + X + 1, N, \max(\id{X}, D), \id{new-Xsum}, \id{Yuntao}, s, m)$
+                        \li $m[(\id{Yuntao}, D, X + 1)] = \id{deadlines} - \id{Xsum}$ \Comment{Memoization of the final result}
+                        \li $m[(\id{Xun}, D, X + 1)] = m[(\id{Yuntao}, D, X + 1)] - s[X + 1, N]$
+                    \End
+                    \li $\id{max-deadlines} = \max(\id{max-deadlines}, \id{deadlines})$
+                \End
+                \li \Return $\id{max-deadlines}$
+            \End
+
+            \li \If $\id{Worker} = \id{Yuntao}$
+            \Then
+                \li $\id{min-deadlines} = \infty$
+                \li \For $\id{X} = 1$ \To $3D$
+                \Do
+                    \li \If $m[(\id{Xun}, D, X + 1)] \ne -1$ \Comment{Checking for memoization}
+                    \Then
+                        \li $\id{deadlines} = m[(\id{Xun}, D, X + 1)]$ \Comment{Memoized - no recursive call needed}
+                    \li \Else
+                        \li $\id{deadlines} = \proc{Q4b-Better}(d, i + \id{X} + 1, N, \max(\id{X}, D), \id{Xsum}, \id{Xun}, s, m)$
+                        \li $m[(\id{Xun}, D, X + 1)] = \id{deadlines} - \id{Xsum}$ \Comment{Memoization of the final result}
+                        \li $m[(\id{Yuntao}, D, X + 1)] = m[(\id{Xun}, D, X + 1)] - s[X + 1, N]$
+                    \End
+                    \li $\id{min-deadlines} = \min(\id{min-deadlines}, \id{deadlines})$
+                \End
+                \li \Return $\id{min-deadlines}$
+            \End
+        \end{codebox}
+    \end{spacing}
+    \vspace{5mm}
+    \textbf{Explanation of $\proc{Q4b-Better}$:}\\
+    The algorithm above takes two more parameters than the ``worst'' one.
+    These parameters, as previously described, are the table of sums, $s$, and the memo, $m$.
+    The only differences between this algorithm and $\proc{Q4b-Better}$ is within line 3, lines 8 - 14 and lines 20 - 25.
+    However, lines 8 - 14 and lines 20 - 25 are the also the same despite the former being attributed to Xun's decision, and the latter to Yuntao's.
+
+    For each choice that can be made for $1 \le X \le 3D$, we must first check if what would be left of the array of deadlines has already been evaluated in a previous call (line 8).
+    Since line 8 falls under Xun's choice, the worker who would be assigned to a given choice would be Yuntao.
+    Therefore, the memo, $m$, is checked for the tuple ($\id{Yuntao}, D, X + 1$).
+    If it exists within $m$, then we can simply set the deadline count for that iteration (line 9).
+    Otherwise, we call the algorithm recursively as we orginally did.
+    Now that a recursive call has been made, we can update $m$.
+    For the next worker, Yuntao, we must store the value of the recursion output \textbf{minus} the sum, $\id{Xsum}$, that was passed (line 13).
+    The reason that this is done is to treat each sub-array as if it is its own set of deadlines, separate from the full array.
+    Line 14 shows an interesting shortcut we can take.
+    Instead of waiting for a different recursive call to memoize the sub-array for the other worker, we can directly memoize it since it would be the ``sub-complement'' of value that was previously memoized.
+    Basically, what this is saying is that if there are $N$ total deadlines and Xun handles $k$ of them, then Yuntao must handle $N - k$. \\
+
+    \textbf{Getting a final answer:}\\
+    Finally, since the $\proc{Q4b}$ algorithm only gives us the number of deadlines that Xun handles, we can find who handles the most deadlines by the same principle used in the last sentence of the previous section.
+    Therefore, consider the pseudocode below:
+
+    \begin{spacing}{1.2}
+        \begin{codebox}
+            \Procname{$\proc{Q4b-FinalAnswer}(d, N)$}
+            \li $s = \proc{BottomUpSums}(d, N)$
+            \li $m = \proc{InitMemo}(N)$
+            \li $\id{deadlines-Xun} = \proc{Q4b-Better}(d, i, N, D, 0, \id{Xun}, s, m)$
+            \li \If $\id{deadlines-Xun} > {1 \over 2}s[1, N]$
+                \Then
+                    \li \Return $\id{Xun}$
+                \li \ElseIf $\id{deadlines-Xun} < {1 \over 2}s[1, N]$
+                \Then
+                    \li \Return $\id{Yuntao}$
+                \li \Else
+                    \li \Return $\id{Tie}$
+                \End
+        \end{codebox}
+    \end{spacing}
+    \vspace{5mm}
+    If the number of deadlines that Xun handles is greater than half of the total deadlines, then she handles the most.
+    Otherwise if it is less, then Yuntao does.
+    Finally, if the number of deadlines handled by each worker is equal, then it is a tie.\\
+
+    \textbf{Summary:}\\
+    In the solution to this question, we first examined the baseline minimax implementation of the Xun and Yuntao's strategies, $\proc{Q4b-Worst}$.
+    Then, we introduced dynamic programming to greatly decrease the original algorithm's time complexity.
+    This was done in two steps:
+    \begin{spacing}{1}
+    \begin{itemize}
+        \item A bottom-up approach for summing sub-arrays
+        \item A top-down (memoization) approach for storing the output of deadlines completed by Xun within a certain sub-array
+    \end{itemize}
+    \end{spacing}
+
+    The first optimization in $\proc{Q4b-Better}$ allowed for an $\mathcal{O}(1)$ retrieval of sums instead of $\mathcal{O}(n)$, and the second optimization limited the number of recursive calls that needed to be made to $\mathcal{O}(n^3)$.
