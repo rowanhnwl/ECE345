@@ -1,1 +1,23 @@
 \section{Question 2}
+Given the primary and secondary hash functions, the doubled hash function will be $h(k, i) = (k mod 11 + i(3k mod 4)) mod 11$ \linebreak
+The array starts as NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL.\linebreak
+7 is inserted for $h(7, 0) = 7$. \linebreak
+Array: NIL NIL NIL NIL NIL NIL NIL 7 NIL NIL NIL.\linebreak
+9 is inserted for $h(9, 0) = 9$. \linebreak
+Array: NIL NIL NIL NIL NIL NIL NIL 7 NIL 9 NIL.\linebreak
+88 is inserted for $h(88, 0) = 0$. \linebreak
+Array: 88 NIL NIL NIL NIL NIL NIL 7 NIL 9 NIL.\linebreak
+11 is inserted for $h(11, 1) = 1$ since $h(11, 0) = 0$ which is a collision. \linebreak
+Array: 88 11 NIL NIL NIL NIL NIL 7 NIL 9 NIL.\linebreak
+25 is inserted for $h(25, 0) = 3$. \linebreak
+Array: 88 11 NIL 25 NIL NIL NIL 7 NIL 9 NIL.\linebreak
+23 is inserted for $h(23, 1) = 2$ since $h(23, 0) = 1$ which is a collision.\linebreak
+Array: 88 11 23 25 NIL NIL NIL 7 NIL 9 NIL.\linebreak
+22 is inserted for $h(22, 2) = 4$ since $h(22, 0) = 0$ which is a collision and $h(22, 1) = 2$ is a collision.\linebreak
+Array: 88 11 23 25 22 NIL NIL 7 NIL 9 NIL.\linebreak
+28 is inserted for $h(28, 0) = 6$.\linebreak
+Array: 88 11 23 25 22 NIL 28 7 NIL 9 NIL.\linebreak
+14 is inserted for $h(14, 1) = 5$ since $h(14, 0) = 3$ which is a collision.\linebreak
+Array: 88 11 23 25 22 14 28 7 NIL 9 NIL.\linebreak
+21 is inserted for $h(21, 0) = 10$.\linebreak
+Array: 88 11 23 25 22 14 28 7 NIL 9 21.\linebreak
