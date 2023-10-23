@@ -172,59 +172,69 @@
     
     We must also consider the space requirements of this incorporation. Since we are storing a single integer for $2n^2$ possible pairs, the space complexity of this structure is $\mathcal{O}(n^2)$. \\
 
-    Finally, let us consider a much faster algorithm:
+    % Finally, let us consider a much faster algorithm:
     
-    \begin{spacing}{1.2}
-        \begin{codebox}
-            \Procname{$\proc{Q4b-Better}(d, i, N, D, \id{Xsum}, \id{Worker}, s, m)$}
-            \li \If $N - i < 3D$
-            \Then
-                \li \If $\id{Worker} = \id{Xun}$
-                \Then
-                    \li $\id{Xsum} = \id{Xsum} + s[i, N]$ \Comment{Getting a sum in $\mathcal{O}(1)$ time}
-                \End
-                \li \Return $\id{Xsum}$
-            \End
+    % \begin{spacing}{1.2}
+    %     \begin{codebox}
+    %         \Procname{$\proc{Q4b-Better}(d, i, N, D, \id{Xsum}, \id{Worker}, s, m)$}
+    %         \li \If $N - i < 3D$
+    %         \Then
+    %             \li \If $\id{Worker} = \id{Xun}$
+    %             \Then
+    %                 \li $\id{Xsum} = \id{Xsum} + s[i, N]$ \Comment{Getting a sum in $\mathcal{O}(1)$ time}
+    %             \End
+    %             \li \Return $\id{Xsum}$
+    %         \End
 
-            \li \If $\id{Worker} = \id{Xun}$
-            \Then
-                \li $\id{max-deadlines} = -\infty$
-                \li \For $\id{X} = 1$ \To $3D$
-                \Do
-                    \li \If $m[(\id{Yuntao}, D, X + 1)] \ne -1$ \Comment{Checking for memoization}
-                    \Then
-                        \li $\id{deadlines} = m[(\id{Yuntao}, D, X + 1)]$ \Comment{Memoized - no recursive call needed}
-                    \li \Else
-                        \li $\id{new-Xsum} = \id{Xsum} + s[i, X]$ \Comment{Getting a sum in $\mathcal{O}(1)$ time}
-                        \li $\id{deadlines} = \proc{Q4b-Better}(d, i + X + 1, N, \max(\id{X}, D), \id{new-Xsum}, \id{Yuntao}, s, m)$
-                        \li $m[(\id{Yuntao}, D, X + 1)] = \id{deadlines} - \id{Xsum}$ \Comment{Memoization of the final result}
-                        \li $m[(\id{Xun}, D, X + 1)] = m[(\id{Yuntao}, D, X + 1)] - s[X + 1, N]$
-                    \End
-                    \li $\id{max-deadlines} = \max(\id{max-deadlines}, \id{deadlines})$
-                \End
-                \li \Return $\id{max-deadlines}$
-            \End
+    %         \li \If $\id{Worker} = \id{Xun}$
+    %         \Then
+    %             \li $\id{max-deadlines} = -\infty$
+    %             \li \For $\id{X} = 1$ \To $3D$
+    %             \Do
+    %                 \li \If $m[(\id{Yuntao}, D, X + 1)] \ne -1$ \Comment{Checking for memoization}
+    %                 \Then
+    %                     \li $\id{deadlines} = m[(\id{Yuntao}, D, X + 1)]$ \Comment{Memoized - no recursive call needed}
+    %                 \li \Else
+    %                     \li $\id{new-Xsum} = \id{Xsum} + s[i, X]$ \Comment{Getting a sum in $\mathcal{O}(1)$ time}
+    %                     \li $\id{deadlines} = \proc{Q4b-Better}(d, i + X + 1, N, \max(\id{X}, D), \id{new-Xsum}, \id{Yuntao}, s, m)$
+    %                     \li $m[(\id{Yuntao}, D, X + 1)] = \id{deadlines} - \id{Xsum}$ \Comment{Memoization of the final result}
+    %                     \li $m[(\id{Xun}, D, X + 1)] = m[(\id{Yuntao}, D, X + 1)] - s[X + 1, N]$
+    %                 \End
+    %                 \li $\id{max-deadlines} = \max(\id{max-deadlines}, \id{deadlines})$
+    %             \End
+    %             \li \Return $\id{max-deadlines}$
+    %         \End
 
-            \li \If $\id{Worker} = \id{Yuntao}$
-            \Then
-                \li $\id{min-deadlines} = \infty$
-                \li \For $\id{X} = 1$ \To $3D$
-                \Do
-                    \li \If $m[(\id{Xun}, D, X + 1)] \ne -1$ \Comment{Checking for memoization}
-                    \Then
-                        \li $\id{deadlines} = m[(\id{Xun}, D, X + 1)]$ \Comment{Memoized - no recursive call needed}
-                    \li \Else
-                        \li $\id{deadlines} = \proc{Q4b-Better}(d, i + \id{X} + 1, N, \max(\id{X}, D), \id{Xsum}, \id{Xun}, s, m)$
-                        \li $m[(\id{Xun}, D, X + 1)] = \id{deadlines} - \id{Xsum}$ \Comment{Memoization of the final result}
-                        \li $m[(\id{Yuntao}, D, X + 1)] = m[(\id{Xun}, D, X + 1)] - s[X + 1, N]$
-                    \End
-                    \li $\id{min-deadlines} = \min(\id{min-deadlines}, \id{deadlines})$
-                \End
-                \li \Return $\id{min-deadlines}$
-            \End
-        \end{codebox}
-    \end{spacing}
-    \vspace{5mm}
+    %         \li \If $\id{Worker} = \id{Yuntao}$
+    %         \Then
+    %             \li $\id{min-deadlines} = \infty$
+    %             \li \For $\id{X} = 1$ \To $3D$
+    %             \Do
+    %                 \li \If $m[(\id{Xun}, D, X + 1)] \ne -1$ \Comment{Checking for memoization}
+    %                 \Then
+    %                     \li $\id{deadlines} = m[(\id{Xun}, D, X + 1)]$ \Comment{Memoized - no recursive call needed}
+    %                 \li \Else
+    %                     \li $\id{deadlines} = \proc{Q4b-Better}(d, i + \id{X} + 1, N, \max(\id{X}, D), \id{Xsum}, \id{Xun}, s, m)$
+    %                     \li $m[(\id{Xun}, D, X + 1)] = \id{deadlines} - \id{Xsum}$ \Comment{Memoization of the final result}
+    %                     \li $m[(\id{Yuntao}, D, X + 1)] = m[(\id{Xun}, D, X + 1)] - s[X + 1, N]$
+    %                 \End
+    %                 \li $\id{min-deadlines} = \min(\id{min-deadlines}, \id{deadlines})$
+    %             \End
+    %             \li \Return $\id{min-deadlines}$
+    %         \End
+    %     \end{codebox}
+    % \end{spacing}
+    % \vspace{5mm}
+
+    Finally, let us imagine some algorithm $\proc{Q4b-Better}$ which uses the same recursive principles described in $\proc{Q4b-Worst}$, but incorporates the bottom-up and top-down optimizations previously described.
+    To reiterate, this algorithm will obtain sums of sub-arrays from a pre-calculated table in $\mathcal{O}(1)$ time and memoize sub-arrays based on the starting day, value of $D$, and starting worker (Xun or Yuntao).
+    This second optimization will limit the number of recursive calls made to just $\mathcal{O}(n^2)$.
+    To show this, we can examine each dimension of the memoization keys.
+    The first is the starting day of the sub-array; since there are only $N$ possible starting days, this dimension has a maximum size of $N$.
+    Next is the value of $D$.
+    Since $D$ is proportional to whatever value of $X$ is chosen, and the maximum possible value of $X$ is $N$, $D$ is also limited by $N$, and therefore its dimension also has a maximum size of $N$.
+    Finally the last dimension is just the player, therefore it has a maximum size of 2.
+
     \textbf{Explanation of $\proc{Q4b-Better}$:}\\
     The algorithm above takes two more parameters than the ``worst'' one.
     These parameters, as previously described, are the table of sums, $s$, and the memo, $m$.

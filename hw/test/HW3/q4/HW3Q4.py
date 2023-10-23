@@ -1,3 +1,5 @@
+import math
+
 def PrintSubArraySums(m):
     for i in range(len(m)):
         for j in range(i, len(m)):
@@ -24,12 +26,104 @@ def SubArraySums(d):
 
             m[i - 1][j - 1] = m[i - 1][j - 2] + m[j - 1][j - 1] # Ones are subtracted for 0-based indexing
 
-    PrintSubArraySums(m)    
+    return m
+
+def Q4bWorst(d, i, N, D, Xsum, Worker, s, calls):
+    calls[0] += 1
+    
+    # Base case
+    if N - i <= 3*D:
+        add = 0
+        if Worker == "Xun":
+            add = s[i][N - 1]
+        return Xsum + add
+    
+    # If Xun is working
+    if Worker == "Xun":
+        maxDeadlines = -math.inf
+
+        for X in range(3*D):  
+            deadlines = Q4bWorst(d, i + X + 1, N, max(X + 1, D), Xsum + s[i][i + X], "Yuntao", s, calls)
+            maxDeadlines = max(maxDeadlines, deadlines)
+
+        return maxDeadlines
+    
+    if Worker == "Yuntao":
+        minDeadlines = math.inf
+
+        for X in range(3*D):
+            deadlines = Q4bWorst(d, i + X + 1, N, max(X + 1, D), Xsum, "Xun", s, calls)
+            minDeadlines = min(minDeadlines, deadlines)
+        return minDeadlines
+    
+    return 0
+
+# Implementation of the "better" function
+def Q4bBetter(d, i, N, D, Xsum, Worker, s, m, calls):
+    calls[0] += 1
+    # Base case
+    if N - i <= 3*D:
+        add = 0
+        if Worker == "Xun":
+            add = s[i][N - 1]
+        return Xsum + add
+    
+    # If Xun is working
+    if Worker == "Xun":
+        maxDeadlines = -math.inf
+
+        for X in range(3*D):
+            deadlines = 0
+
+            if ("Yuntao", max(X + 1, D), i + X + 1) in m:
+                deadlines = m[("Yuntao", max(X + 1, D), i + X + 1)] + Xsum + s[i][i + X]
+            else:
+                deadlines = Q4bBetter(d, i + X + 1, N, max(X + 1, D), Xsum + s[i][i + X], "Yuntao", s, m, calls)
+                m[("Yuntao", max(X + 1, D), i + X + 1)] = deadlines - Xsum - s[i][i + X]
+                m[("Xun", max(X + 1, D), i + X + 1)] = s[i + X + 1][N - 1] - m[("Yuntao", max(X + 1, D), i + X + 1)]
+
+            maxDeadlines = max(maxDeadlines, deadlines)
+
+        return maxDeadlines
+    
+    if Worker == "Yuntao":
+        minDeadlines = math.inf
+
+        for X in range(3*D):
+            deadlines = 0
+
+            if ("Xun", max(X + 1, D), i + X + 1) in m:
+                deadlines = m[("Xun", max(X + 1, D), i + X + 1)] + Xsum
+            else:
+                deadlines = Q4bBetter(d, i + X + 1, N, max(X + 1, D), Xsum, "Xun", s, m, calls)
+                m[("Xun", max(X + 1, D), i + X + 1)] = deadlines - Xsum
+                m[("Yuntao", max(X + 1, D), i + X + 1)] = s[i + X + 1][N - 1] - m[("Xun", max(X + 1, D), i + X + 1)]
+            
+            minDeadlines = min(minDeadlines, deadlines)
+
+        return minDeadlines
+    
+    return 0
 
 def main():
-    d = [1, 3, 3, 2, 5, 2, 6, 5, 2, 7, 8, 3, 4, 6]
+    calls = [0]
 
-    SubArraySums(d)
+    d = [1, 3, 3, 2, 5, 4, 65,3, 5, 3, 5, 30, 4, 65,3, 5, 3, 5, 5, 3, 5, 30, 5, 3, 5, 30, 5, 3, 5]
+    print("\nDeadline array length: " + str(len(d)) + "\n")
+
+    s = SubArraySums(d)
+    m = dict()
+
+    xunDeadlinesWorst = Q4bWorst(d, 0, len(d), 1, 0, "Xun", s, calls)
+    print("Raw minimax: ")
+    print(str(xunDeadlinesWorst) + " deadlines handled by Xun")
+    print(str(calls[0]) + " recursive calls made\n")
+
+    calls = [0]
+    xunDeadlinesBetter = Q4bBetter(d, 0, len(d), 1, 0, "Xun", s, m, calls) 
+    print("Optimized minimax: ")
+    print(str(xunDeadlinesBetter) + " deadlines handled by Xun")
+    print(str(calls[0]) + " recursive calls made\n")
 
 if __name__ == "__main__":
     main()
