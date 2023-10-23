@@ -108,7 +108,7 @@ def Q4bBetter(d, i, N, D, Xsum, Worker, s, m, calls):
 def main():
     calls = [0]
 
-    d = [1, 3, 3, 2, 5, 4, 65,3, 5, 3, 5, 30, 4, 65,3, 5, 3, 5, 5, 3, 5, 30, 5, 3, 5, 30, 5, 3, 5]
+    d = [2, 3, 4, 6, 7, 8, 9]
     print("\nDeadline array length: " + str(len(d)) + "\n")
 
     s = SubArraySums(d)
