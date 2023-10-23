@@ -1,5 +1,29 @@
 \section{Question 4}
 \subsection{(a)}
+The recursive relationship for the number of deadlines that Xun handles is defined as:
+\[
+    S(i, D, W) = \begin{cases}
+        \sum\limits_{k=i}^{N}d[k]                                                                                          & N - i \le 3D \text{ and } W = \id{Xun} \\
+        \min\limits_{1 \le X \le 3D} \{S(i + X + 1, \max(X, D), \id{Xun})\}                                             & W = \id{Yuntao} \\
+        \max\limits_{1 \le X \le 3D} \{S(i + X + 1, N, \max(X, D), \id{Yuntao}) + \sum\limits_{k=i}^{i + X}d[k]\} & W = \id{Xun}
+    \end{cases}
+\]
+
+
+The left-hand side shows a call $S$ being made for some starting day $i$, $D$, and worker $W$ (Xun or Yuntao), where $S$ represents the number of deadlines that Xun will handle from day $i$ to the end.
+Firstly is the case when the number of days that remain is less than or equal to $3D$.
+Since both Xun and Yuntao choose optimally, they will always take the full remainder if possible.
+Therefore, in this case, Xun will simply handle all of the remaining deadlines.
+
+Next is the case when it is Yuntao's turn.
+Since he is looking to minimize the number of deadlines that Xun handles, he will iterate through all possible values of $X$ (from 1 to $3D$) and select the one which yields the smallest value.
+To produce a value, a recursive call is made where the current day, $i$, has been updated to $i + X + 1$, which would be the starting day for Xun's next turn.
+
+Finally, we can examine the case of Xun's turn.
+This case is basically the converse of the one previously described.
+Instead of trying to find the minimum value, Xun is trying to find which choice of $X$ (from 1 to $3D$) will maximize the number of deadlines that she handles.
+We must also make sure that, for Xun's choice of $X$, the corresponding sum of deadlines from $i$ to $i + X$ will be added to her total.
+
 \subsection{(b)}
 The answer to this problem will be shown through a progression of algorithms which output the number of deadlines handled by Xun given optimal choices, from the most time-complex to the least.
 For the initial approach to this problem, consider the pseudocode below:

@@ -108,7 +108,7 @@ def Q4bBetter(d, i, N, D, Xsum, Worker, s, m, calls):
 def main():
     calls = [0]
 
-    d = [2, 3, 4, 6, 7, 8, 9]
+    d = [2, 3, 4, 6, 7, 8, 9, 30, 2, 5, 6, 83, 2, 6, 2, 49, 30]
     print("\nDeadline array length: " + str(len(d)) + "\n")
 
     s = SubArraySums(d)
@@ -124,6 +124,8 @@ def main():
     print("Optimized minimax: ")
     print(str(xunDeadlinesBetter) + " deadlines handled by Xun")
     print(str(calls[0]) + " recursive calls made\n")
+
+    print((len(d)**2)/calls[0])
 
 if __name__ == "__main__":
     main()
