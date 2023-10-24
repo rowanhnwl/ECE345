@@ -12,7 +12,8 @@ int main() {
 
     int loss;
     int min_loss = INT16_MAX;
-    vector<pair<int, int>> clients = {{4, 7}, {8, 10}, {3, 12}, {9, 4}, {17, 5}, {1, 2}, {12, 13}, {5, 2}};  // The first number of pair is impatience and the second number is time
+    // vector<pair<int, int>> clients = {{4, 7}, {8, 10}, {3, 12}, {9, 4}, {17, 5}, {1, 2}, {12, 13}, {5, 2}};  // The first number of pair is impatience and the second number is time
+    vector<pair<int, int>> clients = {{1, 1}, {20, 10}, {10, 2}};
     vector<pair<int, int>> best_order;
     sort(clients.begin(), clients.end());
 
