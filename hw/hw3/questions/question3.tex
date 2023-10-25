@@ -1,6 +1,54 @@
 
 \section{Question 3}
     \subsection{(a)}
+    The loss after visiting $n$ clients would be:
+    \[ loss=\sum_{i=1}^{n}{(t_i \times \sum_{m=1}^{i}{o_m})} \]
+    The greedy algorithm to minimize the loss would be to sort the clients by their ratio of impatience to order time
+    (i.e. $\frac{t_i}{o_i}$) from highest to lowest. In other words, we would prefer to take order from someone who is
+    impatient AND quick in ordering. In terms of time complexity, it is required to go over the list to calculate the
+    ratio for each client and then sort the list based on that, which leads to time complexity of $\mathcal{O}(n)+
+    \mathcal{O}(n\log{n})=\mathcal{O}(n\log{n})$
     \subsection{(b)}
+    The subproblem for this question is to find the client with the highest impatience-to-order time ratio within the
+    clients left. In other words, every time that we visit a client, the subproblem is to search for the next client
+    with the highest $\frac{t_i}{o_i}$ from the pool of clients we haven't visited yet.
     \subsection{(c)}
+    We use direct proof for proving the greedy choice property:
+    \\ assume that the following sequence of the clients is the optimal solution with $\frac{t_1}{o_1}$ being the maximum
+    ($c_i$ represents the $i_{th}$ client)
+    \[ c_1 \rightarrow c_2 \rightarrow c_3 \cdots \rightarrow c_n \] 
+    Let's compare two consecutive clients: $c_m$ and $c_{m+1}$. Based on our optimal solution, if we go to $c_{m+1}$ before
+    $c_m$, our loss would be greater or equal to the minimum loss, and since the loss before $m$ and after $m+1$ would be unchanged
+    we can conclude that:
+    \[ loss(c_{m+1} \rightarrow c_m) \geq loss(c_m \rightarrow c_{m+1}) \] 
+    Now let's expand the loss function for both sides:
+    \[ LHS: t_{m+1}\times(o_1+o_2+\cdots+o_{m-1}+o_{m+1})+t_{m}\times(o_1+o_2+\cdots+o_{m-1}+o_{m+1}+o_m) \]
+    \[ RHS: t_{m}\times(o_1+o_2+\cdots+o_{m-1}+o_{m})+t_{m+1}\times(o_1+o_2+\cdots+o_{m-1}+o_{m}+o_{m+1}) \]
+    By crossing out the duplicates of both sides, we will get:
+    \[ t_{m} \times o_{m+1} \geq t_{m+1} \times o_{m} \]
+    \[ \frac{t_m}{o_m} \geq \frac{t_{m+1}}{o_{m+1}} \]
+    By this, we can conclude that the $t$-to-$o$ ratio of each client has to be greater or equal to the ratio of the next client in the
+    sequence, meaning that there exists an optimal solution that agrees with the first greedy choice of our algorithm, which is the clinet with
+    the highest $t$-to-$o$ ratio. \textbf{Q.E.D}
     \subsection{(d)}
+    The proof for the greedy choice property would be valid to prove the optimal substructure as well. In previous section, it is proved that
+    in order to reach the minimum loss, the $t$-to-$o$ ratio of each client has to be higher than the ratio of the consecutive client, meaning
+    that the loss can be minimized when the clients are ordered based on their $t$-to-$o$ ratio, from largest to lowest. We can also prove this
+    using contradiction:
+    \[ c_1 \rightarrow c_2 \rightarrow c_3 \cdots \rightarrow c_n \]
+    We have ordered the client such that $\frac{t_1}{o_1} \geq \frac{t_2}{o_2} \geq \cdots \geq \frac{t_n}{o_n}$. From this, we can derive that:
+    \begin{equation} \label{eqn}
+    t_i \times o_j \geq t_j \times o_i \; | \; 1 \leq i < j \leq n
+    \end{equation}
+    Let's assume that this is not the optimal solution. This means that there is at least on swap in a sub-sequence of clients that we need to make
+    in order to reach the optimal solution:
+    \[ c_k \rightarrow c_{k+1} \rightarrow c_{k+2} \cdots \rightarrow c_{k+p} \quad \rightarrow \quad
+    c_{k+p} \rightarrow c_{k+1} \rightarrow c_{k+2} \cdots \rightarrow c_{k} \]
+    Since this swap has made our solution more optimal, it means that:
+    \[ loss(c_{k+p} \rightarrow c_{k+1} \rightarrow c_{k+2} \cdots \rightarrow c_{k}) \leq loss(c_{k} \rightarrow c_{k+1} \rightarrow c_{k+2} \cdots \rightarrow c_{k+p}) \]
+    If we remove the duplicates on both sides, we will be left with:
+    \[ LHS: t_{k+p-1} \times o_{k+p} + t_{k+p-2} \times o_{k+p} + \cdots + t_{k} \times o_{k+p} + t_{k} \times o_{k+p-1} + \cdots + t_{k} \times o_{k+1} \]
+    \[ RHS: t_{k+1} \times o_{k} + t_{k+2} \times o_{k} + \cdots + t_{k+p} \times o_{k} + t_{k+p} \times o_{k+1} + \cdots + t_{k+p} \times o_{k+p-1} \]
+    However, refering to Eqn. \ref{eqn}, LHS cannot be less than or equal to RHS as for every $t_i \times o_j | i<j$ on the left hand side, there exists the expression
+    $t_j \times o_i$ on the right hand side which is smaller in value, making a contradiction in the assumption, proving that the substructure gives the
+    optimal solution. \textbf{Q.E.D}
