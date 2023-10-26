@@ -125,7 +125,5 @@ def main():
     print(str(xunDeadlinesBetter) + " deadlines handled by Xun")
     print(str(calls[0]) + " recursive calls made\n")
 
-    print((len(d)**2)/calls[0])
-
 if __name__ == "__main__":
     main()

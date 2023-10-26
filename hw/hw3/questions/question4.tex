@@ -3,8 +3,8 @@
 The recursive relationship for the number of deadlines that Xun handles is defined as:
 \[
     S(i, D, W) = \begin{cases}
-        \sum\limits_{k=i}^{N}d[k]                                                                                          & N - i \le 3D \text{ and } W = \id{Xun} \\
-        \min\limits_{1 \le X \le 3D} \{S(i + X + 1, \max(X, D), \id{Xun})\}                                             & W = \id{Yuntao} \\
+        \sum\limits_{k=i}^{N}d[k]                                                                                 & N - i \le 3D \text{ and } W = \id{Xun} \\
+        \min\limits_{1 \le X \le 3D} \{S(i + X + 1, \max(X, D), \id{Xun})\}                                       & W = \id{Yuntao}                        \\
         \max\limits_{1 \le X \le 3D} \{S(i + X + 1, N, \max(X, D), \id{Yuntao}) + \sum\limits_{k=i}^{i + X}d[k]\} & W = \id{Xun}
     \end{cases}
 \]
@@ -270,13 +270,18 @@ To analyze the full optimized approach to this problem, we must analyze the unio
 As stated previously, the tabulation of the sums of all sub-arrays within the array of deadlines is calculated by the $\proc{BottomUpSums}$ algorithm in both $\mathcal{O}(n^2)$ time and space.
 Next, the initialization of the memoization table is facilitated by the $\proc{InitMemo}$ function.
 As also stated previously, this function stores an integer value for each combination of indices of the deadline array (bounded by $N$) and possible values of $D$ (also bounded by $N$).
-Therefore, this function is also bounded by $\mathcal{O}(n)$ in time and space.
+Therefore, this function is also bounded by $\mathcal{O}(n^2)$ in time and space.
 Finally, we come to our $\proc{Q4bBetter}$ algorithm.
-Because each sub-array sum can be achieved in $\mathcal{O}(1)$ time, each recursive call of this function is bound by $\mathcal{O}(1)$ in time individually.
+We now must analyze the time complexity of an individual recursive call.
+Each recursive call can find the sum of a given subarray in $\mathcal{O}(1)$ time, with this action being performed once per iteration through the possible choices of $X$.
+The number of choices of $X$ is bounded by $N$, the size of the full deadline array, so each recursive call has an $\mathcal{O}(n)$ upper bound.
 Also, because the amount of data stored with each recursive call is independent of input size, each recursive call is individually $\mathcal{O}(1)$ in space.
-Therefore, since the use of memoization limits the number of recursive calls made to $\mathcal{O}(n^2)$, $\proc{Q4bBetter}$ is both $\mathcal{O}(n^2)$ in time and space.
+Therefore, since the use of memoization limits the number of recursive calls made to $\mathcal{O}(n^2)$, $\proc{Q4bBetter}$ is $\mathcal{O}(n^3)$ in time and $\mathcal{O}(n^2)$ in space.
 
-Finally, the total time and space complexities of the dynamic approach can be expressed as:
+Finally, the total time complexity of the dynamic approach can be expressed as:
+\[\mathcal{O}(n^2) + \mathcal{O}(n^2) + \mathcal{O}(n^3) = 2\mathcal{O}(n^2) + \mathcal{O}(n^3) = \mathcal{O}(n^3)\]
+
+And the space complexity is shown to be:
 \[\mathcal{O}(n^2) + \mathcal{O}(n^2) + \mathcal{O}(n^2) = 3\mathcal{O}(n^2) = \mathcal{O}(n^2)\]
 
 % \textbf{Explanation of $\proc{Q4b-Better}$:}\\
@@ -335,4 +340,4 @@ This was done in two steps:
 \end{spacing}
 
 The first optimization in $\proc{Q4b-Better}$ allowed for an $\mathcal{O}(1)$ retrieval of sums instead of $\mathcal{O}(n)$, and the second optimization limited the number of recursive calls that needed to be made to $\mathcal{O}(n^2)$.
-Finally, through an analysis of the full process, it was found that the space and time complexity can both be represented by $\mathcal{O}(n^2)$.
+Finally, through an analysis of the full process, it was found that the time complexity can be represented by $\mathcal{O}(n^3)$ and the space complexity by $\mathcal{O}(n^2)$.
