@@ -13,7 +13,7 @@
     clients left. In other words, every time that we visit a client, the subproblem is to search for the next client
     with the highest $\frac{t_i}{o_i}$ from the pool of clients we haven't visited yet.
     \subsection{(c)}
-    We use direct proof for proving the greedy choice property:
+    We use a direct proof for proving the greedy choice property:
     \\ assume that the following sequence of the clients is the optimal solution with $\frac{t_1}{o_1}$ being the maximum
     ($c_i$ represents the $i_{th}$ client)
     \[ c_1 \rightarrow c_2 \rightarrow c_3 \cdots \rightarrow c_n \] 
@@ -31,16 +31,16 @@
     sequence, meaning that there exists an optimal solution that agrees with the first greedy choice of our algorithm, which is the clinet with
     the highest $t$-to-$o$ ratio. \textbf{Q.E.D}
     \subsection{(d)}
-    The proof for the greedy choice property would be valid to prove the optimal substructure as well. In previous section, it is proved that
+    The proof for the greedy choice property would be valid to prove the optimal substructure as well. In the previous section, it is proved that
     in order to reach the minimum loss, the $t$-to-$o$ ratio of each client has to be higher than the ratio of the consecutive client, meaning
     that the loss can be minimized when the clients are ordered based on their $t$-to-$o$ ratio, from largest to lowest. We can also prove this
     using contradiction:
     \[ c_1 \rightarrow c_2 \rightarrow c_3 \cdots \rightarrow c_n \]
-    We have ordered the client such that $\frac{t_1}{o_1} \geq \frac{t_2}{o_2} \geq \cdots \geq \frac{t_n}{o_n}$. From this, we can derive that:
+    We have ordered the clients such that $\frac{t_1}{o_1} \geq \frac{t_2}{o_2} \geq \cdots \geq \frac{t_n}{o_n}$. From this, we can derive that:
     \begin{equation} \label{eqn}
     t_i \times o_j \geq t_j \times o_i \; | \; 1 \leq i < j \leq n
     \end{equation}
-    Let's assume that this is not the optimal solution. This means that there is at least on swap in a sub-sequence of clients that we need to make
+    Let's assume that this is not the optimal solution. This means that there is at least one swap in a sub-sequence of clients that we need to make
     in order to reach the optimal solution:
     \[ c_k \rightarrow c_{k+1} \rightarrow c_{k+2} \cdots \rightarrow c_{k+p} \quad \rightarrow \quad
     c_{k+p} \rightarrow c_{k+1} \rightarrow c_{k+2} \cdots \rightarrow c_{k} \]
