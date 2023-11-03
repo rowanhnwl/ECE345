@@ -1,15 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
-#include <heapsort.h>
+#include "heapsort.h"
 
 int main(void){
-    int arr[] = {1, 5, 2, 19, 12, 22, 5, 19, 1, 4, 6, 22, 8, 1, 9, 25};
+    int arr[] = {6, 3, 7, 9, 2, 5, 6, 3, 2, 9, 5, 1, 7, 4, 6};
 
     Heap* h = (Heap*)malloc(sizeof(Heap));
     (h -> a) = arr;
     (h -> length) = sizeof(arr) / sizeof(arr[0]);
 
+    midtermQ2(h, 9);
     heapsort(h);
 
     free(h);
@@ -71,6 +73,37 @@ void build_max_heap(Heap* h){
     }
 }
 
+void min_heapify(Heap* h, int i){
+    int l = left(i);
+    int r = right(i);
+
+    int smallest;
+
+    if ((l < h -> heapsize) && ((h -> a)[l] < (h -> a)[i])){
+        smallest = l;
+    }    
+    else {
+        smallest = i;
+    }
+
+    if ((r < h -> heapsize) && ((h -> a)[r] < (h -> a)[smallest])){
+        smallest = r;
+    }
+
+    if (smallest != i){
+        swap(h -> a, i, smallest);
+        min_heapify(h, smallest);
+    } 
+}
+
+void build_min_heap(Heap* h){
+    (h -> heapsize) = (h -> length);
+
+    for (int i = (int)(((h -> length) - 1) / 2); i >= 0; i--){
+        min_heapify(h, i);
+    }
+}
+
 void heapsort(Heap* h){
     build_max_heap(h);
 
@@ -82,4 +115,23 @@ void heapsort(Heap* h){
     }
 
     printarr(h -> a, h -> length);
+}
+
+void midtermQ2(Heap* h, int k){
+    build_min_heap(h);
+    int hs = pow(2, (int)(log2(k) + 1)) - 1;
+
+    int count = k;
+
+    (h -> heapsize) = hs;
+    for (int i = (h -> length) - 1; count >= 0; i--, count--){
+        swap(h -> a, 0, i);
+
+        min_heapify(h, 0);
+    }
+
+    for (int i = 0; i < k; i++){
+        printf("%d ", (h -> a)[h -> length - 1 - i]);
+    }
+    printf("\n");
 }

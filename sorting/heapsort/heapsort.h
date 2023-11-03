@@ -15,4 +15,7 @@ int left(int);
 
 void max_heapify(Heap*, int);
 void build_max_heap(Heap*);
+void min_heapify(Heap*, int);
+void build_min_heap(Heap*);
 void heapsort(Heap*);
+void midtermQ2(Heap*, int);
