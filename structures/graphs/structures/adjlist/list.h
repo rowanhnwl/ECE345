@@ -25,6 +25,7 @@ Node* list_search(NodeList*, int);
 
 // Utilities
 void print_list(NodeList*);
+void copy_list(NodeList*, NodeList*);
 
 // Destructor
 void list_dealloc(NodeList*);

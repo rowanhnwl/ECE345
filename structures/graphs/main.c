@@ -21,9 +21,11 @@ int main(void){
     list_delete(list, 8);
     list_delete(list, 7);
 
+    list_delete(list, 8);
+
     print_list(list);
 
-    if (list_search(list, 5) != NULL){
+    if (list_search(list, 12) != NULL){
         printf("Found 5\n");
     }
 

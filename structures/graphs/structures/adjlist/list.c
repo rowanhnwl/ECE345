@@ -86,6 +86,16 @@ void print_list(NodeList* nl){
     printf("\n");
 }
 
+// Copy one list to the other
+void copy_list(NodeList* nl1, NodeList* nl2){
+    Node* curr1 = nl1 -> head;
+
+    while (curr1 != NULL){
+        list_insert(nl2, curr1 -> id);
+        curr1 = curr1 -> next;
+    }
+}
+
 // Deallocate a list
 void list_dealloc(NodeList* nl){
     
