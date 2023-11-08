@@ -58,6 +58,10 @@ void al_graph_insert(ALGraph* alg){
 
 // Delete a node from the graph
 void al_graph_delete(ALGraph* alg, int del_id){
+    if ((alg -> nodeArray)[del_id] == NULL){
+        printf("Error: could not delete node %d\n", del_id);
+    }
+    
     // Delete all of the connections to the node
     for (int i = 0; i < alg -> graphSize; i++){
         if ((alg -> nodeArray)[i] != NULL){
@@ -76,8 +80,11 @@ void al_graph_delete(ALGraph* alg, int del_id){
 // Connect two nodes in the graph (n1 -> n2)
 void al_graph_connect(ALGraph* alg, int n1_id, int n2_id){
     // Check if the connection already exists
-    if (!al_graph_query_edge(alg, n1_id, n2_id)){
+    if (n2_id < alg -> graphSize && (alg -> nodeArray)[n2_id] != NULL && !al_graph_query_edge(alg, n1_id, n2_id)){
         list_insert((alg -> nodeArray)[n1_id] -> adjNodes, n2_id);
+    }
+    else{
+        printf("Error: could not connect node %d to node %d\n", n1_id, n2_id);
     }
 }
 
@@ -87,11 +94,14 @@ void al_graph_disconnect(ALGraph* alg, int n1_id, int n2_id){
     if (al_graph_query_edge(alg, n1_id, n2_id)){
         list_delete((alg -> nodeArray)[n1_id] -> adjNodes, n2_id);
     }
+    else{
+        printf("Error: could not disconnect node %d from node %d\n", n1_id, n2_id);
+    }
 }
 
 // Check if an edge exists in the graph (n1 -> n2)
 bool al_graph_query_edge(ALGraph* alg, int n1_id, int n2_id){
-    if (list_search((alg -> nodeArray)[n1_id] -> adjNodes, n2_id) == NULL){
+    if ((alg -> nodeArray)[n1_id] == NULL || list_search((alg -> nodeArray)[n1_id] -> adjNodes, n2_id) == NULL){
         return false;
     }
 
@@ -117,12 +127,16 @@ void resize_al_graph(ALGraph* alg){
 
 // Print the contents of a graph
 void print_al_graph(ALGraph* alg){
+    printf("\n");
+
     for (int i = 0; i < alg -> graphSize; i++){
         if ((alg -> nodeArray)[i] != NULL){
             printf("%d: ", i);
             print_list((alg -> nodeArray)[i] -> adjNodes);
         }
     }
+
+    printf("\n");
 }
 
 // Deallocate a base node

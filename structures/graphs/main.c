@@ -2,32 +2,26 @@
 #include <stdlib.h>
 
 #include "structures/adjlist/list.h"
+#include "structures/adjlist/adjacencyList.h"
 
 int main(void){
-    NodeList* list = init_list();
-
-    list_insert(list, 4);
-    list_insert(list, 2);
-    list_insert(list, 1);
-    list_insert(list, 6);
-    list_insert(list, 7);
-    list_insert(list, 5);
-    list_insert(list, 3);
-    list_insert(list, 8);
-
-    print_list(list);
-
-    list_delete(list, 4);
-    list_delete(list, 8);
-    list_delete(list, 7);
-
-    list_delete(list, 8);
-
-    print_list(list);
-
-    if (list_search(list, 12) != NULL){
-        printf("Found 5\n");
+    ALGraph* graph = init_al_graph(BASE_SIZE);
+    
+    for (int i = 0; i < 5; i++){
+        al_graph_insert(graph);
     }
 
-    list_dealloc(list);
+    al_graph_connect(graph, 3, 1);
+    al_graph_connect(graph, 4, 2);
+    al_graph_connect(graph, 3, 5);
+    al_graph_connect(graph, 1, 2);
+    al_graph_connect(graph, 0, 4);
+
+    print_al_graph(graph);
+
+    for (int i = 0; i < 8; i++){
+        al_graph_insert(graph);
+    }
+
+    print_al_graph(graph);
 }
