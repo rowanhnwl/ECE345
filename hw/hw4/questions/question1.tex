@@ -1,1 +1,20 @@
 \section{Question 1}
+	\subsection{(a)}
+	To show that G and H share the same set of minimum spanning trees, we cant show that for any sub-MST, they both share the same safe edges.
+	In theorem 23.1 in CLRS 3rd edition, it is shown that the light edge crossing the cut of any cut of G that respects A is safe for A.
+	The theorem uses the fact that since $(u,v)$ is a light edge, $w(u,v) \leq w(x,y)$. 
+	This means $w(T') = w(T) - w(x,y) + w(u,v) \leq w(T)$.
+	If both $w(x,y)$ and $w(u,v)$ get incremented by one when translating G to H, the above theorem shows that $(u, v)$ is still the safe edge for G and H.
+	Therefore, G and H share the same minimum spanning trees.
+
+	\subsection{(b)}
+		G and H do not share the same shortest paths between all pairs of vertices.
+		\linebreak
+		As a counter example, consider a graph G with a destination vertex $v_d$ and source vertex $v_s$.
+		We need only to show that the shortest path from $v_s$ to $v_d$ is not the same for both graphs.
+		Let there be two paths connecting the two vertices. In graph G, one path consists of 8 edges with weights of 1
+		while the other path consists of one edge with a weight of 9. In graph G, the shortest path involves traversing
+		the path with 8 edges for a cost of 8 instead of traversing the single edge with a cost of 9. In contrast in graph H,
+		the 8 edge path has each edge weighted at 2 with a path cost of 16 and the single edge is weighted at 10. Therefore,
+		the shortest path will be acheived by traversing the single edge. Thefore, the shortest path from $v_s$ to $v_d$ is
+		different in G and H.
