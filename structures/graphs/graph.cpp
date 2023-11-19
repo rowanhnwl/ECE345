@@ -81,7 +81,7 @@ bool Graph::insert_edge(int from_id, int to_id, int w){
 bool Graph::delete_edge(int from_id, int to_id){
     int to_index = query_node(to_id);
     int from_index = query_node(from_id);
-
+    
     if (from_index == -1){
         std::cout << "Error: No node exists with ID " << from_id << std::endl;
         return false;
@@ -91,7 +91,7 @@ bool Graph::delete_edge(int from_id, int to_id){
         return false;
     }
 
-    return nodes[from_id].delete_edge(to_id);
+    return nodes[from_index].delete_edge(to_id);
 }
 
 // Insert a node into the graph
