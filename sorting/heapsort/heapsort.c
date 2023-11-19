@@ -11,7 +11,7 @@ int main(void){
     (h -> a) = arr;
     (h -> length) = sizeof(arr) / sizeof(arr[0]);
 
-    midtermQ2(h, 9);
+    midtermQ2(h, 15);
     heapsort(h);
 
     free(h);
@@ -124,14 +124,12 @@ void midtermQ2(Heap* h, int k){
     int count = k;
 
     (h -> heapsize) = hs;
-    for (int i = (h -> length) - 1; count >= 0; i--, count--){
-        swap(h -> a, 0, i);
+    for (int i = (h -> length) - 1; count > 0; i--, count--){
+        printf("%d ", (h -> a)[0]);
+        swap(h -> a, 0, hs - 1);
 
         min_heapify(h, 0);
-    }
-
-    for (int i = 0; i < k; i++){
-        printf("%d ", (h -> a)[h -> length - 1 - i]);
+        hs--;
     }
     printf("\n");
 }
