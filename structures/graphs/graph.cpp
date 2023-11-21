@@ -57,6 +57,18 @@ int Graph::get_n_edges(){
     return n_edges;
 }
 
+// Get a pointer to a node by index
+Node* Graph::get_node(int id){
+    int node_index = query_node(id);
+
+    if (node_index == -1){
+        std::cout << "Error: No node exists with ID " << id << std::endl;
+        return nullptr;
+    }
+
+    return &nodes[node_index];
+}
+
 // Insert an edge into the graph
 bool Graph::insert_edge(int from_id, int to_id, int w){
     int to_index = query_node(to_id);

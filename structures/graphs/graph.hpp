@@ -16,6 +16,7 @@ class Graph {
         int query_node(int id); // Checks if a node exists in the graph and returns its index
         int query_edge(int from_id, int to_id); // Checks if an edge exists (from, to), returns the weight
         int get_n_edges();
+        Node* get_node(int id); // Get a pointer to a node by index
 
         // Modifiers
         bool insert_edge(int from_id, int to_id, int w); // Inserts an edge (from, to) with a specified weight
