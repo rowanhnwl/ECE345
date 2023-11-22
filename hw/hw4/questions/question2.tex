@@ -10,7 +10,7 @@ The shortest path from $v_{NA} to v_{NA1}$ can be found in $\mathcal{O}((V + E)\
 Similarly, the shortest path from $v_{E} to v_{E1}$ can be found in $\mathcal{O}((V + E)\lg{V})$ using Dijkstra's algorithm with $e_{transatlantic}$ removed.
 The shortest path can then be found by concatenating the previous two paths found with $e_{transatlantic}$.
 
-\linebreak
+%\linebreak
 Since two $\mathcal{O}((V + E)\lg{V})$ operations are run at most (in fact the amortized cost is less - not asymptotically - because 
 both subgraphs only run Dijkstra's algorithm on their nodes and edges which is less the E and V), the asymptotic time complexity of the algorithm is $\mathcal{O}((V + E)\lg{V})$.
 Dijkstra's algorithm uses a priority-queue of vertices to determine the next vertex with the smallest cost which takes $\mathcal{O}(V)$ space.

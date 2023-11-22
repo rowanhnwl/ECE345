@@ -1,1 +1,46 @@
 \section{Question 5}
+\subsection{(a)}
+
+To preface, we will characterize a ``bad'' swap as the swapping of a heavy child to a right child position.
+For each left-heavy node (more descendants on its left than its right) that we come across in
+the traversal of the right-most branch, it is guaranteed that a bad swap will occur as it will be swapped to a right child position.\vspace{3mm}
+
+Next, because we only ever traverse rightwards when merging, every time we come across a left-heavy node, the \textbf{maximum} possible number
+of nodes that remain to be traversed is divided by two.
+Since this is the maximal case, there are \textbf{at most} $\lg{n}$ left-heavy nodes in the right-most branch and consequently a maximum of $\lg{n} - 1$ bad swaps that can occur (since we do not swap the last node).\vspace{3mm}
+
+\textbf{Charge \& Allocation:} Let us charge $2\lg{n} - 1$ credits for each merge operation, where $n$ is the total number of nodes in both $h$ and $h^\prime$.
+We will \textbf{deposit} one credit for each of the first $\lg{n}$ nodes that are merged along the right-most branch.
+Additionally, we will \textbf{deposit} one credit for each bad swap that is performed.
+Finally, we will \textbf{charge} one credit for each swap (good or bad).
+
+\textbf{Credit Invariant:} For each bad swap and corresponding heavy child in a right child location,
+there will be an extra credit stored.
+
+\textbf{Argument for Positive Credit:}
+A perfect \textbf{leftist} heap will have a right-most branch of maximum size $\lg{n}$.
+Since we deposited one credit for each of the first $\lg{n}$ merged nodes,
+the cost of swapping each of these nodes will be covered.
+Of course, there may be additional nodes in the right-most branch since skewed heaps swap unconditionally.
+Since each bad swap has the potential to add one additional node to the right-most branch, this amount is bounded by
+the number of bad swaps that may occur.
+However, since one credit was deposited for each bad swap, and there are a maximum of $\lg{n} - 1$ bad swaps that can occur (as shown previously),
+these swaps will be covered by what was deposited.\\
+Therefore, all of the swapping operations can be accounted
+for by an initial deposit of $\lg{n} + \lg{n} - 1 = 2\lg{n} - 1$ credits.
+It has thus been shown that $\proc{SkewedHeapMerge}$ has an amortized time-complexity of $\mathcal{O}(\lg{n})$.
+
+\subsection{(b)}
+
+\textbf{Analysis of $\proc{Insert}$:} In the case of inserting a new node into a skewed heap, we can simply employ the
+$\proc{SkewedHeapMerge}$ algorithm from part (a). This works because inserting a single
+node into a skewed heap equivalent to merging two heaps, the only condition being that one
+is only a root node.\vspace{3mm}
+
+\textbf{Analysis of $\proc{DeleteMin}$:} Similar to the analysis of $\proc{Insert}$, we can also use $\proc{SkewedHeapMerge}$
+to delete the minimum element from a skewed heap.
+This can be done by disconnecting the heap's root node (minimum) from its two children
+and merging the resulting left and right sub-heaps.\vspace{3mm}
+
+In conclusion, since both $\proc{Insert}$ and $\proc{DeleteMin}$ can be performed through
+a single merge, they both have the same amortized time-complexity of $\mathcal{O}(\lg{n})$.
