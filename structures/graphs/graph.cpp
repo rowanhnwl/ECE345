@@ -46,6 +46,11 @@ int Graph::query_edge(int from_id, int to_id){
     return w;
 }
 
+// Get the number of nodes in the graph
+int Graph::get_n_nodes(){
+    return (int)nodes.size();
+}
+
 // Get the number of edges in the graph
 int Graph::get_n_edges(){
     int n_edges = 0;
@@ -153,6 +158,48 @@ bool Graph::change_node_id(int old_id, int new_id){
 
     nodes[old_index].change_id(new_id);
     return true;
+}
+
+// Change the weight of an edge
+bool Graph::change_edge_weight(int from_id, int to_id, int w){
+    int to_index = query_node(to_id);
+    int from_index = query_node(from_id);
+    
+    if (from_index == -1){
+        std::cout << "Error: No node exists with ID " << from_id << std::endl;
+        return false;
+    }
+    else if (to_index == -1) {
+        std::cout << "Error: No node exists with ID " << to_id << std::endl;
+        return false;
+    }
+
+    return nodes[from_index].change_edge_weight(to_id, w);
+}
+
+// Operator overload for access by index
+Node* Graph::operator[](int index){
+    return &nodes[index];
+}
+
+// Reset the nodes in the graph
+void Graph::reset(){
+    for (int node_index = 0; node_index < nodes.size(); node_index++){
+        nodes[node_index].reset();
+    }
+}
+
+// Clear the edges in the graph (keep the nodes)
+void Graph::clear_edges(){
+    for (int node_index = 0; node_index < nodes.size(); node_index++){
+        nodes[node_index].reset();
+        nodes[node_index].clear_edges();
+    }
+}
+
+// Clear the graph
+void Graph::clear_nodes(){
+    nodes = {};
 }
 
 // Print the graph

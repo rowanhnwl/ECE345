@@ -6,14 +6,20 @@
 #include "graph.hpp"
 #include "node.hpp"
 
+/*
+    ----------------------------------
+             SSSP ALGORITHMS      
+    ----------------------------------
+*/
+
 // Breadth-first-search
-std::vector<Node*> Algorithms::bfs(Graph& g, int s_id, int d_id){
+void Algorithms::SSSP::bfs(Graph& g, int s_id){
     // Get a pointer to the source node
     Node* s_p = g.get_node(s_id);
 
     // Validate the IDs
-    if (s_p == nullptr || g.get_node(d_id) == nullptr){
-        return {};
+    if (s_p == nullptr){
+        return;
     }
 
     // Initialize the source's members
@@ -28,7 +34,7 @@ std::vector<Node*> Algorithms::bfs(Graph& g, int s_id, int d_id){
     // While the queue is not empty
     while (!bfs_queue.empty()){
         // Remove the top of the queue
-        Node* u_p = bfs_queue.back();
+        Node* u_p = bfs_queue.front();
         bfs_queue.pop();
 
         // Iterate through the nodes adjacent to u_p
@@ -46,10 +52,13 @@ std::vector<Node*> Algorithms::bfs(Graph& g, int s_id, int d_id){
         // Mark the node as visited
         u_p -> change_colour('b');
     }
-
-    std::vector<Node*> bfs_path = Algorithms::Utilities::construct_path(g, d_id);
-    return bfs_path;
 }
+
+/*
+    ----------------------------------
+            UTILITY ALGORITHMS      
+    ----------------------------------
+*/
 
 // Reconstruct the path from the destination ID
 std::vector<Node*> Algorithms::Utilities::construct_path(Graph& g, int dest_id){

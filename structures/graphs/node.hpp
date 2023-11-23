@@ -33,6 +33,11 @@ class Node {
         void change_dist(int new_dist);
         void insert_edge(Node* new_node, int w);
         bool delete_edge(int del_id); // Delete a node based on its ID (returns the status)
+        bool change_edge_weight(int id, int w);
+
+        // Utilities
+        void reset();
+        void clear_edges();
 
         // Printing
         void print_adj_nodes();

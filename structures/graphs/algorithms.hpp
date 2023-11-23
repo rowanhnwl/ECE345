@@ -7,17 +7,24 @@
 #define ALGORITHMS_HPP
 
 namespace Algorithms {
-    // Breadth-first-search
-    std::vector<Node*> bfs(Graph& g, int source_id, int dest_id);
 
-    // Depth-first-search
-    std::vector<Node*> dfs(Graph& g, int source_id, int dest_id);
+    // Single source shortest path algorithms
+    namespace SSSP{
+        // Breadth-first-search
+        void bfs(Graph& g, int source_id);
 
-    // Dijkstra's Algorithm
-    std::vector<Node*> dijkstra(Graph& g, int source_id, int dest_id);
+        // Depth-first-search
+        void dfs(Graph& g, int source_id);
 
-    // Prim's Algorithm
-    std::vector<std::pair<Node*, Node*>> prim(Graph& g);
+        // Dijkstra's Algorithm
+        void dijkstra(Graph& g, int source_id);
+    };
+
+    // Min-spanning tree algorithms
+    namespace MST{
+        // Prim's Algorithm
+        std::vector<std::pair<Node*, Node*>> prim(Graph& g);
+    };
 
     // Utility functions
     namespace Utilities {
@@ -26,7 +33,10 @@ namespace Algorithms {
 
         // Print a path
         void print_path(std::vector<Node*> path);
-    }
+
+        // Print shortest paths
+        void print_sssp(Graph& g, int source_id);
+    };
 };
 
 #endif /* ALGORITHMS_HPP */

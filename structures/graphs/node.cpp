@@ -97,6 +97,30 @@ bool Node::delete_edge(int del_id){
     return true;
 }
 
+// Change the weight of an edge
+bool Node::change_edge_weight(int id, int w){
+    for (int adj_index = 0; adj_index < adjNodes.size(); adj_index++){
+        if (adjNodes[adj_index].first -> id == id){
+            adjNodes[adj_index].second = w;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// Reset the properties of a node
+void Node::reset(){
+    colour = 'w';
+    p = nullptr;
+    dist = INT_MAX;
+}
+
+// Clear the edges in a node
+void Node::clear_edges(){
+    adjNodes = {};
+}
+
 // Print the adjacent nodes
 void Node::print_adj_nodes(){
     for (int adj_index = 0; adj_index < (int)adjNodes.size(); adj_index++){
