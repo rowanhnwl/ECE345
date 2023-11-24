@@ -1,11 +1,11 @@
 \section{Question 1}
 	\subsection{(a)}
-	To show that G and H share the same set of minimum spanning trees, we cant show that for any sub-MST, they both share the same safe edges.
+	To show that G and H share the same set of minimum spanning trees, we can show that for any sub-MST, they both share the same safe edges.
 	In theorem 23.1 in CLRS 3rd edition, it is shown that the light edge crossing the cut of any cut of G that respects A is safe for A.
-	The theorem uses the fact that since $(u,v)$ is a light edge, $w(u,v) \leq w(x,y)$. 
-	This means $w(T') = w(T) - w(x,y) + w(u,v) \leq w(T)$.
-	If both $w(x,y)$ and $w(u,v)$ get incremented by one when translating G to H, the above theorem shows that $(u, v)$ is still the safe edge for G and H.
-	Therefore, G and H share the same minimum spanning trees.
+	The theorem uses the fact that since $(u,v)$ is a light edge, $w(u,v) \leq w(x,y)$ for another edge $w(x,y)$ crossing the cut. 
+	This means that swapping $w(u,v)$ for $w(x,y)$ leads to $w(T') = w(T) - w(x,y) + w(u,v) \leq w(T)$.
+	If both $w(x,y)$ and $w(u,v)$ get incremented by one when translating G to H, the above theorem shows that $(u, v)$ is still the safe edge for G and H
+	since the inequality remains unchanged. Therefore, G and H share the same minimum spanning trees.
 
 	\subsection{(b)}
 		G and H do not share the same shortest paths between all pairs of vertices.

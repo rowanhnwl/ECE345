@@ -3,10 +3,10 @@
 First, take each conversion rate and construct a directed graph using an adjacency list.
 Each node represents a currency and its edges represents the conversion ratio from the currency of node A to node B.
 For instance, inserting the conversion CAD to USD involves creating two edges with each edge specifying the conversion from and to both currencies.
-An adjacency list is used because it keeps BFS and DFS down to a $\mathcal{O}(V + E)$ time complexity, 
+An adjacency list is used because it keeps BFS and DFS down to $\mathcal{O}(V + E)$ in time complexity and
 it takes asymptotically less space and time to create than an adjacency matrix.
 \linebreak
-To resolve a currency exchange query, a DFS or BFS (both have take $\mathcal{O}(V + E)$ time) is run on the first node in the exchange query and
+To resolve a currency exchange query, a DFS or BFS (both take $\mathcal{O}(V + E)$ time) is run on the first node in the exchange query and
 terminating if the second node is found in the search. If DFS/BFS fail to find the second currency, then there is no conversion possible.
 If the search is successful, the currency exchange rate will be the muliplication of each edge weight.
 \linebreak

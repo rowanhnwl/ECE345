@@ -3,12 +3,14 @@ The shortest path from every node in North America $v_{NA}$ to every node in Eur
 Additionally, both $v_{NA1}$ and $v_{E1}$ will be in the set of verticies for each shortest path since it is the only path connecting the two subgraphs $G_{NA}$ and $G_{E}$.
 \linebreak
 Using the above statements, the shortest path from each $v_{NA} \in G_{NA}$ to each $v_E \in G_E$ can be broken down into the following:
-$shortest path from v_{NA} to v_{NA1} + shortest path from v_E to v_{E1} + e_{transatlantic}$.
+shortest path from $v_{NA}$ to $v_{NA1}$ $+$ shortest path from $v_E$ to $v_{E1}$ with the addition of the connecting edge $e_{transatlantic}$.
 \linebreak
 
-The shortest path from $v_{NA} to v_{NA1}$ can be found in $\mathcal{O}((V + E)\lg{V})$ using Dijkstra's algorithm (CLRS 3rd Ed, pg 661 - 662) with $e_{transatlantic}$ removed.
+The shortest path from $v_{NA}$ to $v_{NA1}$ can be found in $\mathcal{O}((V + E)\lg{V})$ using Dijkstra's algorithm (CLRS 3rd Ed, pg 661 - 662) with $e_{transatlantic}$ removed.
 Similarly, the shortest path from $v_{E} to v_{E1}$ can be found in $\mathcal{O}((V + E)\lg{V})$ using Dijkstra's algorithm with $e_{transatlantic}$ removed.
 The shortest path can then be found by concatenating the previous two paths found with $e_{transatlantic}$.
+The length of the shortest path between all North American nodes and European nodes will be
+the length of the shortest path from $v_{NA}$ to $v_{NA1}$ $+$ the length of the shortest path from $v_E$ to $v_{E1} + e_{transatlantic}$
 
 %\linebreak
 Since two $\mathcal{O}((V + E)\lg{V})$ operations are run at most (in fact the amortized cost is less - not asymptotically - because 
