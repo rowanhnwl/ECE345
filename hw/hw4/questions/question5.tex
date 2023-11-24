@@ -15,17 +15,17 @@ Additionally, we will \textbf{deposit} one credit for each bad swap that is perf
 Finally, we will \textbf{charge} one credit for each swap (good or bad).
 
 \textbf{Credit Invariant:} For each bad swap and corresponding heavy child in a right child location,
-there will be an extra credit stored.
+there will be an extra credit stored. Also, one credit will be stored for each of the first $\lg{n}$ nodes that must be merged and subsequently swapped.
 
 \textbf{Argument for Positive Credit:}
 A perfect \textbf{leftist} heap will have a right-most branch of maximum size $\lg{n}$.
 Since we deposited one credit for each of the first $\lg{n}$ merged nodes,
 the cost of swapping each of these nodes will be covered.
 Of course, there may be additional nodes in the right-most branch since skewed heaps swap unconditionally.
-Since each bad swap has the potential to add one additional node to the right-most branch, this amount is bounded by
-the number of bad swaps that may occur.
-However, since one credit was deposited for each bad swap, and there are a maximum of $\lg{n} - 1$ bad swaps that can occur (as shown previously),
-these swaps will be covered by what was deposited.\\
+Each bad swap creates an longer right-sided branch somewhere in the heap which may be traversed in a future merge operation.
+It is important to note that the next time this branch is traversed, it will engage a \textbf{good} swap, as the right-heavy node will be swapped to the left.
+Since one credit was deposited for each bad swap, and there are a maximum of $\lg{n} - 1$ bad swaps that can occur (as shown previously),
+these self-correcting swaps will be covered by what was previously deposited.\\
 Therefore, all of the swapping operations can be accounted
 for by an initial deposit of $\lg{n} + \lg{n} - 1 = 2\lg{n} - 1$ credits.
 It has thus been shown that $\proc{SkewedHeapMerge}$ has an amortized time-complexity of $\mathcal{O}(\lg{n})$.

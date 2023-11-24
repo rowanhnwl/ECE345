@@ -54,11 +54,31 @@ void Algorithms::SSSP::bfs(Graph& g, int s_id){
     }
 }
 
+// Dijkstra's Algorithm
+void dijkstra(Graph& g, int s_id){
+    
+}
+
 /*
     ----------------------------------
             UTILITY ALGORITHMS      
     ----------------------------------
 */
+
+// Path relaxation
+bool Algorithms::Utilities::relax(Node* u, int adj_index){
+    Node* v = (u -> access_node(adj_index)).first;
+    int w_uv = (u -> access_node(adj_index)).second;
+    
+    if (v -> get_dist() > u -> get_dist() + w_uv){
+        // Update the distance and predecessor of node v
+        v -> change_dist(u -> get_dist() + w_uv);
+        v -> change_p(u);
+        return true;
+    }
+    
+    return false;
+}
 
 // Reconstruct the path from the destination ID
 std::vector<Node*> Algorithms::Utilities::construct_path(Graph& g, int dest_id){

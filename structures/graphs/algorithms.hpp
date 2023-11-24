@@ -28,6 +28,9 @@ namespace Algorithms {
 
     // Utility functions
     namespace Utilities {
+        // Path relaxation
+        bool relax(Node* u, int adj_index);
+
         // Construct a path through back-tracking from the destination
         std::vector<Node*> construct_path(Graph& g, int dest_id);
 
@@ -36,6 +39,16 @@ namespace Algorithms {
 
         // Print shortest paths
         void print_sssp(Graph& g, int source_id);
+    };
+
+    // Custom comparators
+    namespace Comparitors {
+        // Node distance comparator
+        struct dist_comp {
+            inline bool operator() (Node* n1, Node* n2){
+                return ((n1 -> get_dist()) > (n2 -> get_dist()));
+            }
+        };
     };
 };
 
