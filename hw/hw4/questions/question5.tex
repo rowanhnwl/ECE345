@@ -22,7 +22,7 @@ A perfect \textbf{leftist} heap will have a right-most branch of maximum size $\
 Since we deposited one credit for each of the first $\lg{n}$ merged nodes,
 the cost of swapping each of these nodes will be covered.
 Of course, there may be additional nodes in the right-most branch since skewed heaps swap unconditionally.
-Each bad swap creates an longer right-sided branch somewhere in the heap which may be traversed in a future merge operation.
+Each bad swap creates a longer right-sided branch somewhere in the heap which may be traversed in a future merge operation.
 It is important to note that the next time this branch is traversed, it will engage a \textbf{good} swap, as the right-heavy node will be swapped to the left.
 Since one credit was deposited for each bad swap, and there are a maximum of $\lg{n} - 1$ bad swaps that can occur (as shown previously),
 these self-correcting swaps will be covered by what was previously deposited.\\
