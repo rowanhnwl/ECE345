@@ -1,1 +1,130 @@
 \section{Question 4}
+
+In this question, we have three constraints for our flow network:
+\\ 1. Each doctor should only be assigned to work on the days when they are available.
+\\ 2. For a given parameter $c$, each doctor should be assigned to work at most $c$ vacation days.
+\\ 3. For each vacation period $j$, any given doctor should be scheduled at most one of the days in $D_j$. 
+
+First, we solve the problem without considering the third condition. Assume for doctor $i$, $A_i$ would represent
+the set of vacation days that the doctor is available to work. To begin with, the source node is connected to the column
+of doctor nodes ($d_i$ for doctor $i$). The edge for this connection is set to $c_i$ for each doctor. This way, we ensure that each doctor
+would work less or equal to their capacity, covering constraint number two. Then, each doctor node is connected to next layer which is the vacation
+days ($v_{jm}$ for representing the $m_{th}$ day of $j_{th}$ vacation period), but only for the days that they are available (i.e. there is no connection if
+the day is not part of $A_i$). The edge capacity for this connection is set to 1, representing one whole day in the vacation period.
+The vacation days are then connected to the sink with edge capacity of 1. A simplified version of this network flow is presented in Figure 1 with three doctors 
+and two vacation periods. For solving the problem, we need to set a demanding value of $N$ (the total number of vacation days) for the sink's inflow. In other words, as we solve for the
+maximum flow, if the inflow of the sink would be equal to $N$, we know that we have a feasible schedule with at least one doctor for every vacation day. If the sink value would be $k$ units less than $N$, it means
+that there are $k$ vacation days that we do not have a doctor available for based on our current schedule (i.e. there is no flow in $k$ vacation days). 
+
+\vspace*{1cm}
+{\centering \begin{tikzpicture}[
+    mycircle/.style={
+        circle,
+        draw=black,
+        fill=gray,
+        fill opacity = 0.3,
+        text opacity=1,
+        inner sep=0pt,
+        minimum size=40pt,
+        font=\large},
+    myarrow/.style={-Stealth},
+    node distance=0.6cm and 1.2cm
+    ]
+    \node[mycircle] (s) {$s$};
+    \node[mycircle,right=of s] (d2) {$d_2$};
+    \node[mycircle,above=of d2] (d1) {$d_1$};
+    \node[mycircle,below=of d2] (d3) {$d_3$};
+    \node[mycircle,right=of d1] (v12) {$v_{12}$};
+    \node[mycircle,above=of v12] (v11) {$v_{11}$};
+    \node[mycircle,below=of v12] (v13) {$v_{13}$};
+    \node[mycircle,right=of d3] (v21) {$v_{21}$};
+    \node[mycircle,below=of v21] (v22) {$v_{22}$};
+    \node[mycircle,right=of v13] (t) {$t$};
+
+    \foreach \i/\j/\txt/\p in {% start node/end node/text/position
+    s/d1/$c_1$/above,
+    s/d2/$c_2$/above,
+    s/d3/$c_3$/below,
+    v11/t/1/above,
+    v12/t/1/above,
+    v13/t/1/above,
+    v21/t/1/above,
+    v22/t/1/above,
+    d1/v11/1/above,
+    d1/v12/1/above,
+    d2/v12/1/below,
+    d2/v22/1/below,
+    d3/v13/1/above,
+    d3/v21/1/above}
+    \draw [myarrow] (\i) -- node[sloped,font=\large,\p] {\txt} (\j);
+
+\end{tikzpicture} \par}
+{\centering Figure 1: Flow network solution ignoring constraint number 3.\par}
+
+Now that we have a valid graph for the easier version, it is time to tackle constraint number 3. For this part,
+we have to ensure that each doctor works only on one day during a vacation period. To clarify this constraint using our previous example in Figure 1,
+doctor $d_1$ has to work either on $v_{11}$ or $v_{12}$ regardless of how many days he can work during the vacations ($c_1$). For doing this, we need 
+a new layer to limit the flow that goes into each vacation period from each doctor node. Thus, we introduce a layer between the doctors and the vacation days
+to represent vacation period availability for each doctor ($p_{ij}$ is the node for $i_{th}$ doctor availibity for $j_{th}$ vacation period). The edges are again all set
+to one to ensure the doctor works for only one day per vacation period (i.e. since the inflow of a vacation period is one, only one of the
+vacation days would have a flow). The new version of our flow is represented in Figure 2, derived from our previous example. 
+Again for comleting the algorithm, we set a demanding value of $N$ (the total number of vacation days) for the sink's inflow, knowing that our schedule is feasible as long as this
+requirement (demand) is met in our circulation.
+
+\vspace*{1cm}
+{\centering \begin{tikzpicture}[
+    mycircle/.style={
+        circle,
+        draw=black,
+        fill=gray,
+        fill opacity = 0.3,
+        text opacity=1,
+        inner sep=0pt,
+        minimum size=40pt,
+        font=\large},
+    myarrow/.style={-Stealth},
+    node distance=0.6cm and 1.2cm
+    ]
+    \node[mycircle] (s) {$s$};
+    \node[mycircle,right=of s] (d2) {$d_2$};
+    \node[mycircle,above=of d2] (d1) {$d_1$};
+    \node[mycircle,below=of d2] (d3) {$d_3$};
+    \node[mycircle,above right=of d2] (p21) {$p_{21}$};
+    \node[mycircle,below right=of d2] (p22) {$p_{22}$};
+    \node[mycircle,above=of p21] (p12) {$p_{12}$};
+    \node[mycircle,above=of p12] (p11) {$p_{11}$};
+    \node[mycircle,below=of p22] (p31) {$p_{31}$};
+    \node[mycircle,below=of p31] (p32) {$p_{32}$};
+
+    \node[mycircle,right=of p12] (v12) {$v_{12}$};
+    \node[mycircle,above=of v12] (v11) {$v_{11}$};
+    \node[mycircle,below=of v12] (v13) {$v_{13}$};
+    \node[mycircle,right=of p22] (v21) {$v_{21}$};
+    \node[mycircle,below=of v21] (v22) {$v_{22}$};
+    \node[mycircle,above right=of v21] (t) {$t$};
+
+    \foreach \i/\j/\txt/\p in {% start node/end node/text/position
+    s/d1/$c_1$/above,
+    s/d2/$c_2$/above,
+    s/d3/$c_3$/below,
+    d1/p11//above,
+    d1/p12//above,
+    d2/p21//above,
+    d2/p22//above,
+    d3/p31//above,
+    d3/p32//below,
+    v11/t//above,
+    v12/t//above,
+    v13/t//above,
+    v21/t//above,
+    v22/t//above,
+    p11/v11//above,
+    p11/v12//above,
+    p21/v12//below,
+    p22/v22//above,
+    p31/v13//above,
+    p32/v21//above}
+    \draw [myarrow] (\i) -- node[sloped,font=\large,\p] {\txt} (\j);
+
+\end{tikzpicture} \par}
+{\centering Figure 2: Flow network full solution, derived from Figrue 1 (For more clarity, only the edges with weight not equal to 1 are specified).\par}
