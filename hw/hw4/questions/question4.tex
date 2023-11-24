@@ -6,14 +6,15 @@ In this question, we have three constraints for our flow network:
 \\ 3. For each vacation period $j$, any given doctor should be scheduled at most one of the days in $D_j$. 
 
 First, we solve the problem without considering the third condition. Assume for doctor $i$, $A_i$ would represent
-the set of vacation days that the docor is available to work. To begin with, the source node is connected to the column
-of doctor nodes ($d_i$ for doctor $i$). The edge for this connection is set to $c_i$ for doctor $i$. This way, we ensure that each doctor
+the set of vacation days that the doctor is available to work. To begin with, the source node is connected to the column
+of doctor nodes ($d_i$ for doctor $i$). The edge for this connection is set to $c_i$ for each doctor. This way, we ensure that each doctor
 would work less or equal to their capacity, covering constraint number two. Then, each doctor node is connected to next layer which is the vacation
-days ($v_{jm}$ for representing the $m_{th}$ day of $j_{th}$ vacation period). The edge capacity for this connection is set to 1, representing one whole day in the vacation period.
-The vacation day are then connected to the sink with edge capacity of 1. A simplified version of this network flow is presented in Figure 1 with three doctors 
+days ($v_{jm}$ for representing the $m_{th}$ day of $j_{th}$ vacation period), but only for the days that they are available (i.e. there is no connection if
+the day is not part of $A_i$). The edge capacity for this connection is set to 1, representing one whole day in the vacation period.
+The vacation days are then connected to the sink with edge capacity of 1. A simplified version of this network flow is presented in Figure 1 with three doctors 
 and two vacation periods. For solving the problem, we need to set a demanding value of $N$ (the total number of vacation days) for the sink's inflow. In other words, as we solve for the
-maximum flow, if the inflow of the sink would be equal to $N$, we know that we have a feasible schedule with at least one doctor on a vacation day. If the sink value would be $k$ units less than $N$, it means
-that there are $k$ vacation days that we do not have a doctor available for based on our current schedule. 
+maximum flow, if the inflow of the sink would be equal to $N$, we know that we have a feasible schedule with at least one doctor for every vacation day. If the sink value would be $k$ units less than $N$, it means
+that there are $k$ vacation days that we do not have a doctor available for based on our current schedule (i.e. there is no flow in $k$ vacation days). 
 
 \vspace*{1cm}
 {\centering \begin{tikzpicture}[
@@ -60,10 +61,10 @@ that there are $k$ vacation days that we do not have a doctor available for base
 \end{tikzpicture} \par}
 {\centering Figure 1: Flow network solution ignoring constraint number 3.\par}
 
-Now that we have a valid chart for the easier version, it is time to tackle constraint number 3. For this part,
+Now that we have a valid graph for the easier version, it is time to tackle constraint number 3. For this part,
 we have to ensure that each doctor works only on one day during a vacation period. To clarify this constraint using our previous example in Figure 1,
 doctor $d_1$ has to work either on $v_{11}$ or $v_{12}$ regardless of how many days he can work during the vacations ($c_1$). For doing this, we need 
-a new chart to limit the flow that goes into each vacation day node from each doctor node. Thus, we introduce a layer between the doctors and the vacation days
+a new layer to limit the flow that goes into each vacation period from each doctor node. Thus, we introduce a layer between the doctors and the vacation days
 to represent vacation period availability for each doctor ($p_{ij}$ is the node for $i_{th}$ doctor availibity for $j_{th}$ vacation period). The edges are again all set
 to one to ensure the doctor works for only one day per vacation period (i.e. since the inflow of a vacation period is one, only one of the
 vacation days would have a flow). The new version of our flow is represented in Figure 2, derived from our previous example. 
@@ -126,4 +127,4 @@ requirement (demand) is met in our circulation.
     \draw [myarrow] (\i) -- node[sloped,font=\large,\p] {\txt} (\j);
 
 \end{tikzpicture} \par}
-{\centering Figure 1: Flow network full solution, derived from Figrue 1 (For more clarity, only the edges with weight not equal to 1 are specified).\par}
+{\centering Figure 2: Flow network full solution, derived from Figrue 1 (For more clarity, only the edges with weight not equal to 1 are specified).\par}
