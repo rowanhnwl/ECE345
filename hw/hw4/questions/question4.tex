@@ -71,7 +71,7 @@ vacation days would have a flow). The new version of our flow is represented in 
 Again for comleting the algorithm, we set a demanding value of $N$ (the total number of vacation days) for the sink's inflow, knowing that our schedule is feasible as long as this
 requirement (demand) is met in our circulation. As we use the Ford-Fulkerson polynomial-time algorithm for this question, it requires at most
 $N$ iterations to find all the augmenting paths in the residual network. Thus, according to the textbook, the overall time complexity would be $\mathcal{O}(EN)$ ($E$ is the total number of edges) plus the required time
-for checking if the sink's input flow is equal to $N$ or not.
+for checking if the sink's input flow is equal to $N$ or not [1].
 
 \vspace*{0.2cm}
 {\centering \begin{tikzpicture}[
