@@ -56,7 +56,36 @@ void Algorithms::SSSP::bfs(Graph& g, int s_id){
 
 // Dijkstra's Algorithm
 void dijkstra(Graph& g, int s_id){
-    
+    // Priority queue initialization
+    std::priority_queue<Node*, std::vector<Node*>, Algorithms::Comparators::dist_comp> pq;
+
+    // Get a pointer to the source node
+    Node* s_p = g.get_node(s_id);
+
+    // Validate the IDs
+    if (s_p == nullptr){
+        return;
+    }
+
+    // Initialize the source node and the queue
+    s_p -> change_dist(0);
+    s_p -> change_colour('g');
+    pq.push(s_p);
+
+    while (!pq.empty()){
+        // Access and remove the node with the highest priority
+        Node* u_p = pq.top();
+        pq.pop();
+
+        for (int adj_index = 0; adj_index < u_p -> get_n_adj(); adj_index++){
+            Node* v_p = (u_p -> access_node(adj_index)).first;
+
+            // Change the attributes for the unvisited node
+            if (v_p -> get_colour() == 'w'){
+                
+            }
+        }
+    }
 }
 
 /*

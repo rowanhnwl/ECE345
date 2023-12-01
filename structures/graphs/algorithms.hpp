@@ -42,7 +42,7 @@ namespace Algorithms {
     };
 
     // Custom comparators
-    namespace Comparitors {
+    namespace Comparators {
         // Node distance comparator
         struct dist_comp {
             inline bool operator() (Node* n1, Node* n2){
