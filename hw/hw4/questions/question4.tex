@@ -3,7 +3,7 @@
 In this question, we have three constraints for our flow network:
 \\ 1. Each doctor should only be assigned to work on the days when they are available.
 \\ 2. For a given parameter $c$, each doctor should be assigned to work at most $c$ vacation days.
-\\ 3. For each vacation period $j$, any given doctor should be scheduled at most one of the days in $D_j$. 
+\\ 3. For each vacation period $j$, any given doctor should be scheduled at most one day in $D_j$. 
 
 First, we solve the problem without considering the third condition. Assume for doctor $i$, $A_i$ would represent
 the set of vacation days that the doctor is available to work. To begin with, the source node is connected to the column
@@ -14,9 +14,9 @@ the day is not part of $A_i$). The edge capacity for this connection is set to 1
 The vacation days are then connected to the sink with an edge capacity of 1. A simplified version of this network flow is presented in Figure 1 with three doctors 
 and two vacation periods. For solving the problem, we need to set a demanding value of $N$ (the total number of vacation days) for the sink's inflow. In other words, as we solve for the
 maximum flow, if the inflow of the sink would be equal to $N$, we know that we have a feasible schedule with at least one doctor for every vacation day. If the sink value would be $k$ units less than $N$, it means
-that there are $k$ vacation days that we do not have a doctor available for based on our current schedule (i.e. there is no flow in $k$ vacation days). 
+that there are $k$ vacation days that we do not have a doctor available for (i.e. there is no flow in $k$ vacation days). 
 
-\vspace*{1cm}
+\vspace*{0.2cm}
 {\centering \begin{tikzpicture}[
     mycircle/.style={
         circle,
@@ -69,9 +69,11 @@ to represent vacation period availability for each doctor ($p_{ij}$ is the node 
 to one to ensure the doctor works for only one day per vacation period (i.e. since the inflow of a vacation period is one, only one of the
 vacation days would have a flow). The new version of our flow is represented in Figure 2, derived from our previous example. 
 Again for comleting the algorithm, we set a demanding value of $N$ (the total number of vacation days) for the sink's inflow, knowing that our schedule is feasible as long as this
-requirement (demand) is met in our circulation.
+requirement (demand) is met in our circulation. As we use the Ford-Fulkerson polynomial-time algorithm for this question, it requires at most
+$N$ iterations to find all the augmenting paths in the residual network. Thus, according to the textbook, the overall time complexity would be $\mathcal{O}(EN)$ ($E$ is the total number of edges) plus the required time
+for checking if the sink's input flow is equal to $N$ or not [1].
 
-\vspace*{1cm}
+\vspace*{0.2cm}
 {\centering \begin{tikzpicture}[
     mycircle/.style={
         circle,
