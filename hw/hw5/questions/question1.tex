@@ -1,1 +1,104 @@
 \section{Question 1}
+
+\textbf{Proof of} $\omega(T_{\text{approx}}) \le 2(1 - {1 \over l})\omega(T_{\text{opt}})$\textbf{:}
+
+Firstly, let us consider a clockwise traversal of an optimal Steiner tree, $T_{\text{opt}}$, with the minimum number of leaves.
+We will partition this traversal into sections denoted by $C_i$ for the $i$th section.
+Let each section be the set of edges between two consecutive leaves in the order of traversal such that, for $l$ total leaves:
+
+\begin{equation}
+    C_i =
+    \begin{cases}
+        E \in (r_i \leadsto r_{i + 1}) & i \le l - 1 \\
+        E \in (r_i \leadsto r_1)       & i = l
+    \end{cases}
+    \label{eqn:ci}
+\end{equation}
+
+Where $r_i$ refers to the $i$th visited leaf.
+From Eqn. \ref{eqn:ci}, it is clear that this traversal forms a cycle through $T_{\text{opt}}$ since the last section, $C_l$, connects the final and initial visited leaves.
+Finally, let $A$ denote the concatenation of all $C_i$ into one set.\vspace{3mm}
+
+\textbf{Lemma 1:} The set $A$ contains exactly two instances of each edge in $T_{\text{opt}}$.\vspace{3mm}
+
+\textbf{Proof of Lemma 1 by induction:}
+
+\textbf{Basis:} Let $T_2$ be a Steiner tree with two nodes.
+Since the two nodes must be connected by a single edge, they will each be leaves.
+Because the clockwise traversal implies that there will be one section for each leaf, $T_2$ will produce two sections ($C_1$ and $C_2$).
+Section $C_1$ will travel along the edge from the first node to the second, and $C_2$ will be the reverse.
+Therefore, $C_1$ and $C_2$ each contain the same single edge with $A_{T_2} = \{C_1, C_2\}$ containing the edge exactly twice.
+It has thus been shown that Lemma 1 holds for the basis. \\
+\textbf{Hypothesis:} For a Steiner tree with $n$ nodes, $T_n$, there will be exactly two instances of each edge (in $T_n$) in $A_{T_n}$.\\
+\textbf{Inductive Step:} Assuming the hypothesis is true, we must prove that this property will hold for $T_{n+1}$.
+    To do this, we examine the different mechanisms in which a new node can be added to the Steiner tree $T_n$:
+    \vspace{-2mm}
+    \begin{enumerate}
+        \item Adding a non-leaf node\vspace{-3mm}
+        \item Adding a leaf node connected to a non-leaf node\vspace{-3mm}
+        \item Adding a leaf node connected to leaf node\vspace{-3mm}
+    \end{enumerate}
+
+    A `leaf node' denotes a node that, when inserted, will only be connected to one other node in the tree.
+    For \textbf{case 1}, we grow the tree by adding a new node that will not be a leaf.
+    To preserve the properties of the tree, this must be done by bisecting an existing edge with the new node.
+    Each instance of the edge in $A_{T_n}$ will simply be split into two different edges, allowing $A_{T_{n + 1}}$ to obey the hypothesis.
+    Next, for \textbf{case 2}, the tree is grown by connecting a new leaf node to a non-leaf node.
+    By increasing the total number of leaves by one, this will bisect some section $C_i$, splitting it into two new sections.
+    Each of these new sections will have exactly one instance of the edge that was added to support the new leaf node.
+    Therefore, in this case the only change to $A_{T_n}$ is adding exactly two instances of the new edge.
+    It has thus been shown that case 2 respects the hypothesis.
+    Finally, in \textbf{case 3} the tree grows from the addition of a new leaf node connected to an existing leaf node.
+    By adding a new leaf in such a way, the existing leaf will have two adjacent nodes, thereby losing its leaf property.
+    This addition then implies that the total number of leaves in the tree, $l$, will remain the same.
+    Therefore, this addition simply extends two sections, $C_i$ and $C_{i+1}$, by the same edge, adding two instances of this new edge to $A_{T_n}$.
+    Since all three cases preserve the hypothesis, $A_{T_{n + 1}}$ will have exactly two instances of each edge in $T_{n+1}$.
+
+    \textbf{Q.E.D (Lemma 1)} \\
+
+    Now that it has been shown that $A$ contains exactly two instances of each edge in $T_{\text{opt}}$, consider the largest section in $A$, denoted as $C_{\text{max}}$.
+    Let us define the following set:
+    \[P = A \text{\textbackslash} \{C_{\text{max}}\}\]
+
+    In the \textbf{minimal} case, $\omega(C_{\text{max}}) = \omega(C_i), \forall i \in [1, l]$.
+    By definition, this occurs when all $C_i$ have the same weight.
+    In this case, since each section takes up an equal fraction of the weight of $A$, an upper bound can be derived for the weight of $P$:
+
+    \[C_{\text{max}} \ge \frac{\omega{(A)}}{l}\]
+    \[\omega{(P)} \le \omega{(A)} - \frac{\omega{(A)}}{l}\]
+    \[\omega{(P)} \le (1 - \frac{1}{l})\omega{(A)}\]
+
+    Finally, by Lemma 1, the weight of $A$ should be exactly double the weight of $T_{\text{opt}}$.
+    This leads to an upper bound on the weight of $P$ with respect to the weight of $T_{\text{opt}}$:
+
+    \begin{equation}
+        \omega{(P)} \le 2(1 - \frac{1}{l})\omega{(T_{\text{opt}})}
+        \label{eqn:p}
+    \end{equation}
+
+    Let us now examine the Steiner tree approximation algorithm.\vspace{3mm}
+
+    \textbf{Lemma 2:} $\omega{(T_{\text{approx}})} \le \omega{(G_2)}$\vspace{3mm}
+
+    \textbf{Proof of Lemma 2:}
+    Since $G_2$ is a minimum spanning tree of $G_1$, a complete graph, its total weight must be less than $G_1$.
+    Next, the weight of $G_2$ after being mapped back into $G$ remains the same since the edges of $G_2$ will be replaced by equally-weighted paths.
+    With $G_2$ being mapped into $G$, the minimum spanning tree $G_4$ of $G_3$ will have a weight less than or equal to $G_2$.
+    Finally, the weight of $G_4$ may be further reduced in $T_{\text{approx}}$ by removing any leaves that are not vertices in $R$.
+    Therefore $\omega{(T_{\text{approx}})} \le \omega{(G_2)}$.
+
+    \textbf{Q.E.D (Lemma 2)}\\
+
+    The total path weight between any two required nodes (in $R$) in $P$ is \textbf{at minimum} the smallest path weight between them in $G$.
+    Equivalently, the lightest path in $G$ between two nodes in $R$ has the weight of their connecting edge in $G_1$.
+    Therefore, consider removing any connections in $G_1$ whose equivalent connection in $P$ requires passing through a separate node in $R$.
+    The result is a graph ${G_1}^\prime$ that spans $G_1$ and has a weight (by Inequality \ref{eqn:p}): 
+    \[\omega{({G_1}^\prime)} \le \omega{(P)} \le 2(1 - \frac{1}{l})\omega{(T_{\text{opt}})}\]
+    This is because, by removing the aforementioned connections in $G_1$, we now guarantee that any path from one required node to the next is as light as possible.
+    Finally, since $G_2$ is a minimum spanning tree of $G_1$, $\omega{(G_2)} \le \omega{({G_1}^\prime)}$.
+    Therefore, incorporating Lemma 2 and Inequality \ref{eqn:p}, we are left with the following relationship:
+    \[\omega{(T_{\text{approx}})} \le \omega{(G_2)} \le \omega{({G_1}^\prime)} \le \omega{(P)} \le 2(1 - \frac{1}{l})\omega{(T_{\text{opt}})}\]
+    Simplifying, we achieve the bound:
+    \[\omega{(T_{\text{approx}})} \le 2(1 - \frac{1}{l})\omega{(T_{\text{opt}})}\]\\
+
+    \textbf{Q.E.D}
