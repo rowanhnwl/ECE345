@@ -1,3 +1,10 @@
 \section{Question 2}
 \subsection{(a)}
+Given two graphs $G_1 = (V_1, E_1)$ and $G_2 = (V_2, E_2)$, the form of the certificate is 
+n pairs of vertices $v_1 \in V_1$ and $v_2 \in V_2$ and m pairs of edges $e_1 \in E_1$ and $e_2 \in E_2$ representing the common subgraph and an integer k.
+The verification algorithm first affirms that the number of edge pairs is greater than k.
+Next, for each pair of edges $(u_1, v_1)$ and $(u_2, v_2)$, the verifcation algorithm checks that $(u_1, u_2)$ and $(v_1, v_2)$ are pairs in the set of vertices.
+The worst case runtime for this algorithm means that for each edge pair, every vertex pair needs to be traversed making the time complexity $\mathcal{O}(VE)$
+where V and E represent the maximum size between $G_1$ and $G_2$ of their vertices and edges respectivly.
+Therefore, we can verify the certificate in polynomial time.
 \subsection{(b)}
