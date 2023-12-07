@@ -3,7 +3,7 @@
 In order to prove that $B \in \text{NP}$, we need to show that it is verifiable with a given certificate.
 The certificate for this question should have the following language:
 \[\text{certificate}=\{\langle C, W, V \rangle : C = \text{a subset of } S, \hspace{5mm} W,V \in \mathbb{R}\}\]
-Given this certificate, we can go through the subset, calculate the sum of weights and values and compare them with $W$ and $V$ to
+We can see that this certificate is in polynomial-size as it has $n$ elements. Given this certificate, we can go through the subset, calculate the sum of weights and values and compare them with $W$ and $V$ to
 check whether they meet the requirement or not. This simple algorithm has time complexity of $\mathcal{O}(n)$ which means
 this problem is verifiable in polynomial-time, thus an NP. 
 \subsection{(b)}
