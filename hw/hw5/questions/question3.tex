@@ -2,31 +2,36 @@
 \subsection{(a)}
 In order to prove that $B \in \text{NP}$, we need to show that it is verifiable with a given certificate.
 The certificate for this question should have the following language:
-\[\text{certificate}=\{\langle C, W, V \rangle : C = \text{a subset of } S, \hspace{5mm} W,V \in \mathbb{R}\}\]
-We can see that this certificate is in polynomial-size as it has $n$ elements. Given this certificate, we can go through the subset, calculate the sum of weights and values and compare them with $W$ and $V$ to
-check whether they meet the requirement or not. This simple algorithm has time complexity of $\mathcal{O}(n)$ which means
-this problem is verifiable in polynomial-time, thus an NP. 
+\[\text{certificate}=\{\langle C, W, V \rangle : C \subseteq S \text{ and } W,V \in \mathbb{R}\}\]
+We can see that this certificate is polynomial in size as it has at most $n$ elements. Therefore, we can simply sum the weights and values and compare the sums with $W$ and $V$ for verification. This algorithm has a time complexity of $\mathcal{O}(n)$ which means
+this problem is verifiable in polynomial time and a member of NP.
 \subsection{(b)}
-For showing that $A \leq_P B$, we need a polynomial-time function that transform a problem in $A$ language to $B$ language.
-This way we can show that $B$ is at least as hard as $A$. Given a set $S$ and target $k$ such that there is subset $C \subseteq S$ with sum
-of values equal to $k$, we can construct our \textsc{Knapsack} language as:
+For showing that $\textsc{SubsetSum} \leq_P \textsc{Knapsack}$, we need a polynomial-time function that transforms an instance of $\textsc{SubsetSum}$ to an instance of $\textsc{Knapsack}$.
+This way we can show that $\textsc{Knapsack}$ is at least as hard as $\textsc{SubsetSum}$. Given a set $S$ and target $k$ with a subset $C \subseteq S$ whose sum is equal to $k$, we can construct the \textsc{Knapsack} language as:
 \begin{equation}
     \begin{aligned}
-        \textsc{Knapsack}=\{\langle S', W, V \rangle : & S' = \text{a set with elements } S'_i \text{ as } (w_i, v_i) \text{ where } w_i=v_i=S_i, \\
-        & W=V=k\}
+        \textsc{Knapsack}=\{\langle S', W, V \rangle : W = V\}
     \end{aligned}
 \end{equation}
-In other words, we set the elements of $S$ for both the weights and values of $S'$ and set $k$ for both $W$ and $V$. This reduction function is in polynomial-time
-as it has to go over the set $S$ once (time complexity of $\mathcal{O}(n)$). In order to show that our function works, we have to prove that
-$\langle S, k \rangle \in \textsc{Subset Sum}$ if and only if $\langle S', W, V \rangle \in \textsc{Knapsack}$: \\
+Where $S'$ is a set of tuples each containing a weight and a value.
+For the $i$th element, both the weight ($w_i$) and the value ($v_i$) will be equal to the $i$th element of $S$.
+In other words, $S'$ is achieved by duplicating $S$ and packaging each pair into tuples.
+Finally, let the bounds on the sums of the weights and values ($W, V$) be equal to $k$.
+This reduction function is $\mathcal{O}(n)$ in time
+as it must iterate through $S$ exactly once.
 
-\textbf{Equivalence Proof:} Suppose $\exists C \subseteq S$ such that $\sum C = k$. Then, by setting $S'$ with weights and values in the same order of $S$ and the targets of them equal to $k$, there will be a 
-$C' \subseteq S'$ such that $\sum_{C'}w_i=k\leq W$ and $\sum_{C'}v_i=k\geq V$.
+In order to prove that the proposed reduction is valid, we must show that:
+\[\langle S, k \rangle \in \textsc{SubsetSum} \Longleftrightarrow \langle S', W, V \rangle \in \textsc{Knapsack}\]
 
-Now suppose $\exists C' \subseteq S'$ such that $\sum_{C'}w_i\leq W$ and $\sum_{C'}v_i\geq V$. Note that the weights and values of every element in $S'$ is the same and $V=W$. Thus, we can say that
-the list of weights is exactly the same as the list of values in $C'$. Since $V=W$, the only way that the sum of this list can be at most $W$ and at least $V$ is if it would be equal to them. By setting
-a new set $S$ as $S_i=v_i \text{ or } w_i$, there would be a subset $C \subseteq S$ such that $\sum C=V=W=k$. \\
+\textbf{Proof of $\Rightarrow$}:
+Suppose there exists a $C \subseteq S$ such that $\sum C = k$. By constructing $S'$, it is guaranteed that there will be a $C' \subseteq S'$ whose
+weight and value sums are exactly equal to $W$ and $V$ respectively since $W = V = k$.
 
-Now that we have proved $B \in \text{NP}$ and $A \leq_P B$, we can conclude that the \textsc{Knapsack} problem is NP-Complete.
+\textbf{Proof of $\Leftarrow$}:
+Now suppose there exists a $C' \subseteq S'$ whose weight sum is less than or equal to $W$ and whose value sum is greater than or equal to $V$. Recall that the weights and values of every element in $S'$ are equal and $V=W$.
+Since $V=W$, the only way that the sum of this list can be at most $W$ and at least $V$ is if it would be exactly equal to them.
+By setting a new set $S$ as $S_i=v_i$, there would be a subset $C \subseteq S$ such that $\sum C=k$ due to the condition that $W = V = k$. \\
+
+Therefore, since $\textsc{Knapsack} \in \text{NP}$ and $\textsc{SubsetSum} \leq_P \textsc{Knapsack}$, we can conclude that the \textsc{Knapsack} problem is NP-Complete. \\
 
 \textbf{Q.E.D}
