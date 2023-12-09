@@ -23,11 +23,11 @@ as it must iterate through $S$ exactly once.
 In order to prove that the proposed reduction is valid, we must show that:
 \[\langle S, k \rangle \in \textsc{SubsetSum} \Longleftrightarrow \langle S', W, V \rangle \in \textsc{Knapsack}\]
 
-\textbf{Proof of $\Rightarrow$}:
+\textbf{Proof of $\Rightarrow$:}
 Suppose there exists a $C \subseteq S$ such that $\sum C = k$. By constructing $S'$, it is guaranteed that there will be a $C' \subseteq S'$ whose
 weight and value sums are exactly equal to $W$ and $V$ respectively since $W = V = k$.
 
-\textbf{Proof of $\Leftarrow$}:
+\textbf{Proof of $\Leftarrow$:}
 Now suppose there exists a $C' \subseteq S'$ whose weight sum is less than or equal to $W$ and whose value sum is greater than or equal to $V$. Recall that the weights and values of every element in $S'$ are equal and $V=W$.
 Since $V=W$, the only way that the sum of this list can be at most $W$ and at least $V$ is if it would be exactly equal to them.
 By setting a new set $S$ as $S_i=v_i$, there would be a subset $C \subseteq S$ such that $\sum C=k$ due to the condition that $W = V = k$. \\
