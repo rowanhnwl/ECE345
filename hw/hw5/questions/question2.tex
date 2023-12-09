@@ -1,11 +1,12 @@
 \section{Question 2}
 \subsection{(a)}
-Given two graphs $G_1 = (V_1, E_1)$ and $G_2 = (V_2, E_2)$, the form of the certificate is 
-n pairs of vertices $v_1 \in V_1$ and $v_2 \in V_2$ and m pairs of edges $e_1 \in E_1$ and $e_2 \in E_2$ representing the common subgraph and an integer k.
-The verification algorithm first affirms that the number of edge pairs is greater than k.
-Next, for each pair of edges $(u_1, v_1)$ and $(u_2, v_2)$, the verifcation algorithm checks that $(u_1, u_2)$ and $(v_1, v_2)$ are pairs in the set of vertices.
-The worst case runtime for this algorithm means that for each edge pair, every vertex pair needs to be traversed making the time complexity $\mathcal{O}(VE)$
-where V and E represent the maximum size between $G_1$ and $G_2$ of their vertices and edges respectivly.
+The form of the certificate is V vertices and E edges representing the common subgraph G.
+The verification algorithm first affirms that the number of edges in G is greater than k.
+This can be done in polynomial time with BFS or DFS.
+Next, the verifcation algorithm iterates over each edge $(u, v) \in G$ and checks that $(u, v) \in G_1 \land (u, v) \in G_2$.
+This can be accomplished by using DFS or BFS to search for the edge in $G_1$ and $G_2$.
+The DFS or BFS take $\mathcal{O}(V + E)$ time and at most E edges need to be iterated over.
+This makes the overall runtime of the verifcation algorithm to be $\mathcal{O}(E^2 + VE)$.
 Therefore, we can verify the certificate in polynomial time.
 \subsection{(b)}
 To show that B is NP-hard, we can show that $A \leq_P B$. 
@@ -26,10 +27,10 @@ can be added to the copied subgraph which also takes polynomial time to create a
 graph $G_2$. We need to show the following:
 \[\langle G, k \rangle \in \textsc{clique} \Leftrightarrow \langle G1, G2, k \rangle \in \textsc{longest-common-subgraph}\]
 
-Proof of $\Rightarrow$:
+\textbf{Proof} of $\Rightarrow$:
 If a clique of size k exists in G, then a subgraph of size at least k is guaranteed to be 
 in both subgraph G1 and G2 because the clique was modified to have an arbitrary subgraph of size k, 
 and then it was copied for graph G2. 
-Proof of $\Leftarrow$:
+\textbf{Proof} of $\Leftarrow$:
 If G1 and G2 both have a common subgraph of size greater than k, then connecting k nodes in subgraph
 yields a graph with a clique of size k.
