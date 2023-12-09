@@ -8,3 +8,28 @@ The worst case runtime for this algorithm means that for each edge pair, every v
 where V and E represent the maximum size between $G_1$ and $G_2$ of their vertices and edges respectivly.
 Therefore, we can verify the certificate in polynomial time.
 \subsection{(b)}
+To show that B is NP-hard, we can show that $A \leq_P B$. 
+Let $\langle G, k \rangle$ be an instance of $\textsc{clique}$,
+we can construct an instance of largest-common-subgraph through
+the following steps in polynomial time. 
+
+First, we know that by deleting edges from a clique of size k, 
+we can construct an arbitrary graph beacuse a clique of size k maximizes
+the number of edges. Second, We know that the number of
+edges associated with a clique of size k is bounded by $\mathcal{O}(k^2)$
+so deleting these edges runs in polynomial time. In this graph, $G_1$, 
+We can delete edges in the clique to make an arbitrary subgraph of size k.
+
+Creating a copy of the subgraph takes polynomial time since the graph can be 
+traversed in  $\mathcal{O}(V + E)$ time with DFS or BFS. Then a series of edges and nodes
+can be added to the copied subgraph which also takes polynomial time to create a secondary 
+graph $G_2$. We need to show the following:
+\[\langle G, k \rangle \in \textsc{clique} \Leftrightarrow \langle G1, G2, k \rangle \in \textsc{longest-common-subgraph}\]
+
+Proof of $\Rightarrow$:
+If a clique of size k exists in G, then a subgraph of size at least k is guaranteed to be 
+in both subgraph G1 and G2 because the clique was modified to have an arbitrary subgraph of size k, 
+and then it was copied for graph G2. 
+Proof of $\Leftarrow$:
+If G1 and G2 both have a common subgraph of size greater than k, then connecting k nodes in subgraph
+yields a graph with a clique of size k.
